@@ -593,9 +593,8 @@ RESPONSE FORMAT — respond ONLY with valid JSON, no markdown, no extra text:
   content_msgs.push({type:'text',text:userText});
 
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const res=await fetch('/api/claude',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:SYSTEM,messages:[{role:'user',content:content_msgs}]})
     });
     const data=await res.json();

@@ -175,159 +175,78 @@ html,body{height:100%;background:#080808;color:#ede8e0;font-family:'Barlow',sans
 .gal-placeholder svg{width:28px;height:28px;stroke:rgba(180,140,80,0.2);fill:none;stroke-width:1}
 
 
-/* ════════════════════════════════
-   RESULT PAGE
-   ════════════════════════════════ */
-#page-result{display:none}
-#page-result.on{display:block}
+/* CHAT PAGE */
+#page-result{display:none;height:100vh;flex-direction:column}
+#page-result.on{display:flex}
 
-.result-nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
+.chat-topbar{
+  flex-shrink:0;
   display:flex;align-items:center;justify-content:space-between;
-  padding:2rem 3rem;background:rgba(8,8,8,0.96);
-  border-bottom:1px solid rgba(180,140,80,0.08);
+  padding:1.25rem 2rem;
+  background:rgba(8,8,8,0.98);
+  border-bottom:1px solid rgba(180,140,80,0.1);
+  z-index:10;
 }
-.result-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;font-weight:400;letter-spacing:0.12em;color:#ede8e0}
-.result-logo em{font-style:normal;color:#c9a96e}
+.chat-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.12em;color:#ede8e0}
+.chat-logo em{font-style:normal;color:#c9a96e}
 .back-btn{
   background:none;border:1px solid rgba(180,140,80,0.2);
   color:#7a7060;font-family:'Barlow Condensed',sans-serif;
-  font-size:0.85rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;
-  padding:0.5rem 1rem;cursor:pointer;transition:all 0.3s;
+  font-size:0.82rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;
+  padding:0.45rem 0.9rem;cursor:pointer;transition:all 0.3s;
 }
 .back-btn:hover{border-color:rgba(180,140,80,0.5);color:#c9a96e}
-
-.result-body{
-  max-width:740px;margin:0 auto;
-  padding:9rem 2rem 5rem;
-}
-
-/* USER QUERY RECAP */
-.query-recap{
-  margin-bottom:3rem;
-  padding-bottom:2rem;
-  border-bottom:1px solid rgba(180,140,80,0.1);
-}
-.query-label{
-  font-size:0.82rem;letter-spacing:0.3em;text-transform:uppercase;
-  color:#7a7060;margin-bottom:0.75rem;
-  font-family:'Barlow Condensed',sans-serif;font-weight:500;
-}
-.query-text{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(2rem,4vw,3.5rem);font-weight:400;line-height:1.1;
-  letter-spacing:0.04em;color:#ede8e0;
-}
-.query-img-badge{
-  display:none;align-items:center;gap:0.5rem;
-  margin-top:0.75rem;
-  font-size:0.72rem;color:#7a7060;
-}
-.query-img-badge.on{display:flex}
-.query-img-badge svg{width:14px;height:14px;stroke:#c9a96e;fill:none;stroke-width:1.5}
-
-/* AI RESPONSE */
-.ai-response{
-  opacity:0;
-  animation:fadeUp 0.7s 0.1s cubic-bezier(0.16,1,0.3,1) forwards;
-}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
-.ai-thinking{
-  display:flex;gap:6px;align-items:center;padding:1rem 0;
-}
+.chat-layout{flex:1;display:grid;grid-template-columns:1fr 320px;min-height:0;}
+.chat-messages{display:flex;flex-direction:column;overflow-y:auto;padding:2rem;gap:1.5rem;scrollbar-width:thin;scrollbar-color:#222 transparent;}
+.bubble-row{display:flex;gap:0.75rem;align-items:flex-start;animation:bubbleIn 0.4s cubic-bezier(0.16,1,0.3,1)}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.bubble-row.user{flex-direction:row-reverse}
+.bubble-av{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.1em;margin-top:2px;}
+.bubble-av.luna{background:linear-gradient(135deg,#6b5232,#c9a96e);color:#080808}
+.bubble-av.user{background:#1e1e1e;color:#7a7060;border:1px solid #2a2a2a}
+.bubble{max-width:72%;padding:1rem 1.25rem;font-family:'Barlow',sans-serif;font-size:0.95rem;font-weight:400;line-height:1.8;}
+.bubble-row.luna .bubble{background:#111;border-left:2px solid #c9a96e;color:#c8c0b4;}
+.bubble-row.luna .bubble strong{color:#ede8e0;font-weight:600}
+.bubble-row.user .bubble{background:#161410;border-right:2px solid rgba(180,140,80,0.3);color:#ede8e0;text-align:right;}
+.bubble-img-badge{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;color:#c9a96e;margin-bottom:0.4rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:0.08em;}
+.typing-bubble{display:flex;gap:5px;align-items:center;padding:0.25rem 0}
 .t-dot{width:6px;height:6px;border-radius:50%;background:#5a4a30;animation:tdot 1.3s ease-in-out infinite}
 .t-dot:nth-child(2){animation-delay:.2s}.t-dot:nth-child(3){animation-delay:.4s}
-@keyframes tdot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
-
-.ai-text{
-  font-family:'Barlow',sans-serif;font-size:1.05rem;font-weight:400;
-  line-height:1.85;color:#c8c0b4;
-}
-.ai-text strong{color:#ede8e0;font-weight:600}
-
-/* ESTIMATE BLOCK */
-.estimate-block{
-  margin:2.5rem 0;
-  background:#111;
-  border:1px solid rgba(180,140,80,0.2);
-  padding:2rem 2.5rem;
-  opacity:0;transform:translateY(10px);
-  transition:opacity 0.6s ease,transform 0.6s ease;
-}
-.estimate-block.on{opacity:1;transform:translateY(0)}
-.est-label{
-  font-size:0.82rem;letter-spacing:0.3em;text-transform:uppercase;
-  color:#7a7060;margin-bottom:0.75rem;
-  font-family:'Barlow Condensed',sans-serif;font-weight:500;
-}
-.est-figure{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(3.5rem,7vw,6rem);
-  font-weight:400;line-height:1;letter-spacing:0.04em;
-  color:#ede8e0;
-}
-.est-sub{
-  font-size:0.88rem;font-weight:400;
-  color:#7a7060;margin-top:0.5rem;letter-spacing:0.04em;
-  font-family:'Barlow',sans-serif;
-}
-.est-details{
-  display:flex;gap:2.5rem;margin-top:1.5rem;
-  padding-top:1.5rem;
-  border-top:1px solid rgba(180,140,80,0.1);
-  flex-wrap:wrap;
-}
-.est-detail{display:flex;flex-direction:column;gap:0.3rem}
-.est-detail-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:#5a5048;font-family:'Barlow Condensed',sans-serif;font-weight:500}
-.est-detail-val{font-size:1rem;font-weight:600;color:#ede8e0;font-family:'Barlow',sans-serif}
-
-/* SPECIALTIES */
-.spec-row{
-  display:flex;gap:0.5rem;flex-wrap:wrap;
-  margin:2rem 0;
-}
-.spec-chip{
-  font-size:0.82rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
-  font-family:'Barlow Condensed',sans-serif;
-  border:1px solid rgba(180,140,80,0.2);
-  color:#9a9080;padding:0.4rem 0.9rem;
-}
-
-/* ACTIONS */
-.actions-block{
-  margin-top:3rem;
-  padding-top:2.5rem;
-  border-top:1px solid rgba(180,140,80,0.1);
-  opacity:0;transform:translateY(10px);
-  transition:opacity 0.6s ease,transform 0.6s ease;
-}
-.actions-block.on{opacity:1;transform:translateY(0)}
-.actions-heading{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(2.5rem,5vw,4rem);font-weight:400;letter-spacing:0.05em;
-  color:#ede8e0;margin-bottom:1.75rem;
-  line-height:1;
-}
-.actions-heading em{font-style:normal;color:#c9a96e}
-
-.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.action-card{
-  background:#111;border:1px solid rgba(180,140,80,0.15);
-  padding:1.75rem;cursor:pointer;
-  text-decoration:none;
-  transition:border-color 0.3s,background 0.3s;
-  display:flex;flex-direction:column;gap:0.5rem;
-}
-.action-card:hover{border-color:rgba(180,140,80,0.4);background:#161610}
-.action-card-icon{font-size:1.2rem;margin-bottom:0.2rem}
-.action-card-title{font-size:1.05rem;font-weight:600;color:#ede8e0;font-family:'Barlow',sans-serif}
-.action-card-desc{font-size:0.82rem;font-weight:400;color:#7a7060;line-height:1.6;font-family:'Barlow',sans-serif}
-.action-card.primary{
-  background:rgba(201,169,110,0.08);
-  border-color:rgba(180,140,80,0.35);
-}
-.action-card.primary .action-card-title{color:#c9a96e}
+@keyframes tdot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
+.chat-input-bar{flex-shrink:0;padding:1.25rem 2rem;border-top:1px solid rgba(180,140,80,0.1);background:#0c0c0c;display:flex;flex-direction:column;gap:0.6rem;}
+.chat-img-pill{display:none;align-items:center;gap:0.5rem;font-size:0.75rem;color:#7a7060;font-family:'Barlow Condensed',sans-serif;letter-spacing:0.08em;}
+.chat-img-pill.on{display:flex}
+.chat-rm-img{background:none;border:none;color:#7a7060;cursor:pointer;font-size:0.9rem;line-height:1;margin-left:auto;transition:color 0.2s}
+.chat-rm-img:hover{color:#c9a96e}
+.chat-input-row{display:flex;gap:0.6rem;align-items:flex-end}
+.chat-textarea{flex:1;background:#111;border:1px solid rgba(180,140,80,0.12);color:#ede8e0;font-family:'Barlow',sans-serif;font-size:0.95rem;font-weight:400;padding:0.75rem 1rem;resize:none;outline:none;min-height:46px;max-height:120px;line-height:1.6;transition:border-color 0.3s;}
+.chat-textarea:focus{border-color:rgba(180,140,80,0.4)}
+.chat-textarea::placeholder{color:#3a3530}
+.chat-attach-lbl{width:46px;height:46px;flex-shrink:0;background:#111;border:1px solid rgba(180,140,80,0.12);color:#7a7060;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all 0.3s;}
+.chat-attach-lbl:hover{border-color:rgba(180,140,80,0.4);color:#c9a96e}
+.chat-send-btn{width:46px;height:46px;flex-shrink:0;background:#c9a96e;border:none;color:#080808;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s;}
+.chat-send-btn:hover{background:#ede8e0}
+.chat-send-btn:disabled{opacity:0.35;cursor:default}
+.chat-sidebar{border-left:1px solid rgba(180,140,80,0.08);background:#0a0a0a;overflow-y:auto;display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:#1a1a1a transparent;}
+.sb-section{padding:1.75rem;border-bottom:1px solid rgba(180,140,80,0.07)}
+.sb-label{font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:#5a5048;margin-bottom:1.1rem;}
+.est-card{background:#111;border:1px solid rgba(180,140,80,0.18);padding:1.25rem;opacity:0;transform:translateY(8px);transition:opacity 0.5s ease,transform 0.5s ease;}
+.est-card.on{opacity:1;transform:translateY(0)}
+.est-price{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:0.04em;color:#ede8e0;line-height:1;}
+.est-note{font-size:0.8rem;color:#7a7060;margin-top:0.35rem;font-family:'Barlow',sans-serif;line-height:1.5}
+.est-row{display:flex;justify-content:space-between;align-items:baseline;padding:0.5rem 0;border-bottom:1px solid rgba(180,140,80,0.07);}
+.est-row:last-child{border-bottom:none}
+.est-k{font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#5a5048}
+.est-v{font-family:'Barlow',sans-serif;font-size:0.88rem;font-weight:600;color:#ede8e0}
+.sb-action{display:flex;flex-direction:column;gap:0.6rem;padding:1.1rem;background:#111;border:1px solid rgba(180,140,80,0.12);text-decoration:none;cursor:pointer;transition:border-color 0.3s,background 0.3s;margin-bottom:0.5rem;}
+.sb-action:hover{border-color:rgba(180,140,80,0.35);background:#161410}
+.sb-action:last-child{margin-bottom:0}
+.sb-action-title{font-family:'Barlow',sans-serif;font-size:0.9rem;font-weight:600;color:#ede8e0}
+.sb-action-desc{font-family:'Barlow',sans-serif;font-size:0.75rem;font-weight:400;color:#7a7060;line-height:1.5}
+.sb-action.gold{border-color:rgba(180,140,80,0.3);background:rgba(201,169,110,0.05)}
+.sb-action.gold .sb-action-title{color:#c9a96e}
+.sb-actions-wrap{opacity:0;transform:translateY(8px);transition:opacity 0.5s ease,transform 0.5s ease;}
+.sb-actions-wrap.on{opacity:1;transform:translateY(0)}
 
 /* ── TRANSITIONS ── */
 .page-transition{
@@ -337,16 +256,18 @@ html,body{height:100%;background:#080808;color:#ede8e0;font-family:'Barlow',sans
 .page-transition.on{opacity:1;pointer-events:all}
 
 /* RESPONSIVE */
-@media(max-width:600px){
-  .home-nav,.result-nav{padding:1.5rem 1.5rem}
+@media(max-width:700px){
+  .home-nav,.chat-topbar{padding:1.25rem 1.5rem}
   .home-center{padding:7rem 1.5rem 3rem}
   #gallery{padding:4rem 1.5rem}
-  .result-body{padding:8rem 1.5rem 4rem}
-  .action-grid{grid-template-columns:1fr}
   .card-actions{flex-wrap:wrap}
   .gallery-grid{grid-template-columns:repeat(3,1fr)}
-  .home-title{font-size:2.4rem}
-  .est-details{gap:1.5rem}
+  .home-title{font-size:2.6rem}
+  .chat-layout{grid-template-columns:1fr}
+  .chat-sidebar{display:none}
+  .chat-messages{padding:1.25rem}
+  .chat-input-bar{padding:1rem 1.25rem}
+  .bubble{max-width:88%;font-size:0.88rem}
 }
 </style>
 </head>
@@ -406,68 +327,63 @@ html,body{height:100%;background:#080808;color:#ede8e0;font-family:'Barlow',sans
 
 </div>
 
-<!-- ═══════════════════════════ RESULT ═══════════════════════════ -->
 <div id="page-result">
-
-  <nav class="result-nav">
-    <div class="result-logo">Edgar <em>Luna</em></div>
-    <button class="back-btn" onclick="goHome()">← Start over</button>
-  </nav>
-
-  <div class="result-body">
-
-    <!-- Query recap -->
-    <div class="query-recap">
-      <div class="query-label">Your idea</div>
-      <div class="query-text" id="recap-text"></div>
-      <div class="query-img-badge" id="recap-img">
-        <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-        <span id="recap-img-name"></span>
-      </div>
-    </div>
-
-    <!-- AI response -->
-    <div class="ai-response" id="ai-response">
-      <div class="ai-thinking" id="ai-thinking">
-        <div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>
-      </div>
-      <div id="ai-content" style="display:none">
-        <div class="ai-text" id="ai-text"></div>
-        <div class="estimate-block" id="est-block">
-          <div class="est-label">Estimated Range</div>
-          <div class="est-figure" id="est-figure"></div>
-          <div class="est-sub" id="est-sub"></div>
-          <div class="est-details" id="est-details"></div>
-        </div>
-        <div class="spec-row" id="spec-row"></div>
-        <div class="actions-block" id="actions-block">
-          <div class="actions-heading">Ready to <em>book</em>?</div>
-          <div class="action-grid">
-            <a class="action-card primary" href="https://instagram.com/officialedgarluna" target="_blank">
-              <div class="action-card-icon">📸</div>
-              <div class="action-card-title">DM on Instagram</div>
-              <div class="action-card-desc">Send your idea directly to Edgar @officialedgarluna — fastest way to lock in a date</div>
-            </a>
-            <div class="action-card" onclick="showContact()">
-              <div class="action-card-icon">📅</div>
-              <div class="action-card-title">Request Appointment</div>
-              <div class="action-card-desc">Fill out a booking request and Edgar will follow up within 24–48 hrs</div>
-            </div>
-            <a class="action-card" href="tel:+17020000000">
-              <div class="action-card-icon">📞</div>
-              <div class="action-card-title">Call the Studio</div>
-              <div class="action-card-desc">Las Vegas · By appointment only</div>
-            </a>
-            <a class="action-card" href="https://instagram.com/lunatattoodstudio" target="_blank">
-              <div class="action-card-icon">🏠</div>
-              <div class="action-card-title">Luna Tattoo Studio</div>
-              <div class="action-card-desc">Follow the studio for availability and flash drops</div>
-            </a>
+  <div class="chat-topbar">
+    <div class="chat-logo">Edgar <em>Luna</em></div>
+    <button class="back-btn" onclick="goHome()">← New idea</button>
+  </div>
+  <div class="chat-layout">
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-sidebar">
+      <div class="sb-section">
+        <div class="sb-label">Estimate</div>
+        <div class="est-card" id="est-card">
+          <div class="est-price" id="est-price">—</div>
+          <div class="est-note" id="est-note">Send your idea to get a quote</div>
+          <div style="margin-top:1rem;display:flex;flex-direction:column">
+            <div class="est-row"><span class="est-k">Time</span><span class="est-v" id="est-time">—</span></div>
+            <div class="est-row"><span class="est-k">Rate</span><span class="est-v">$200 / hr</span></div>
+            <div class="est-row"><span class="est-k">Deposit</span><span class="est-v">$100</span></div>
           </div>
         </div>
       </div>
+      <div class="sb-section">
+        <div class="sb-label">Specialties</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(180,140,80,0.15);color:#5a5048;padding:0.3rem 0.7rem">Hyperrealism</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(180,140,80,0.15);color:#5a5048;padding:0.3rem 0.7rem">Portrait</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(180,140,80,0.15);color:#5a5048;padding:0.3rem 0.7rem">Dark Art</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(180,140,80,0.15);color:#5a5048;padding:0.3rem 0.7rem">Blackwork</span>
+        </div>
+      </div>
+      <div class="sb-section sb-actions-wrap" id="sb-actions">
+        <div class="sb-label">Book with Edgar</div>
+        <a class="sb-action gold" href="https://instagram.com/officialedgarluna" target="_blank">
+          <div class="sb-action-title">📸 DM on Instagram</div>
+          <div class="sb-action-desc">@officialedgarluna — fastest way to lock in a date</div>
+        </a>
+        <div class="sb-action" onclick="showContact()">
+          <div class="sb-action-title">📅 Request Appointment</div>
+          <div class="sb-action-desc">Edgar follows up within 24–48 hrs</div>
+        </div>
+        <a class="sb-action" href="https://instagram.com/lunatattoodstudio" target="_blank">
+          <div class="sb-action-title">🏠 Luna Tattoo Studio</div>
+          <div class="sb-action-desc">Las Vegas · By appointment only</div>
+        </a>
+      </div>
     </div>
-
+  </div>
+  <div class="chat-input-bar">
+    <div class="chat-img-pill" id="chat-img-pill">
+      📎 <span id="chat-img-name"></span>
+      <button class="chat-rm-img" onclick="clearChatImg()">✕</button>
+    </div>
+    <div class="chat-input-row">
+      <textarea class="chat-textarea" id="chat-input" placeholder="Ask a follow-up — change the size, placement, style..." rows="1" onkeydown="onChatKey(event)" oninput="autoH(this)"></textarea>
+      <label for="chat-file-in" class="chat-attach-lbl" title="Add image">📎</label>
+      <input type="file" id="chat-file-in" accept="image/*" onchange="onChatFile(event)" style="display:none"/>
+      <button class="chat-send-btn" id="chat-send-btn" onclick="sendChat()">→</button>
+    </div>
   </div>
 </div>
 
@@ -505,28 +421,20 @@ html,body{height:100%;background:#080808;color:#ede8e0;font-family:'Barlow',sans
 </div>
 
 <script>
-// ── INPUT STATE ───────────────────────────────────────
-let imgFile=null,imgB64=null;
+let homeImg=null,homeImgB64=null;
 const mainInput=document.getElementById('main-input');
 const submitBtn=document.getElementById('submit-btn');
-
-mainInput.addEventListener('input',()=>{
-  submitBtn.disabled=mainInput.value.trim().length<5;
-  autoH(mainInput);
-});
-
+mainInput.addEventListener('input',()=>{submitBtn.disabled=mainInput.value.trim().length<5;autoH(mainInput);});
 function autoH(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,200)+'px'}
-function handleEnter(e){if(e.key==='Enter'&&!e.shiftKey&&mainInput.value.trim().length>=5){e.preventDefault();submitQuery()}}
-
+function handleEnter(e){if(e.key==='Enter'&&!e.shiftKey&&mainInput.value.trim().length>=5){e.preventDefault();submitQuery();}}
 function onFile(e){
-  const f=e.target.files[0];if(!f)return;imgFile=f;
+  const f=e.target.files[0];if(!f)return;homeImg=f;
   const r=new FileReader();
-  r.onload=ev=>{imgB64=ev.target.result.split(',')[1];document.getElementById('img-pill-name').textContent=f.name;document.getElementById('img-pill').classList.add('on');};
+  r.onload=ev=>{homeImgB64=ev.target.result.split(',')[1];document.getElementById('img-pill-name').textContent=f.name;document.getElementById('img-pill').classList.add('on');};
   r.readAsDataURL(f);
 }
-function clearImg(){imgFile=null;imgB64=null;document.getElementById('img-pill').classList.remove('on');document.getElementById('file-in').value='';}
+function clearImg(){homeImg=null;homeImgB64=null;document.getElementById('img-pill').classList.remove('on');document.getElementById('file-in').value='';}
 
-// ── GALLERY (placeholder tiles) ───────────────────────
 const GALLERY_COLORS=['#1a1612','#181510','#141210','#1c1814','#201c16','#161412'];
 const gg=document.getElementById('gallery-grid');
 for(let i=0;i<12;i++){
@@ -536,135 +444,163 @@ for(let i=0;i<12;i++){
   gg.appendChild(d);
 }
 
-// ── PAGE TRANSITION ───────────────────────────────────
 function transitionTo(fn){
   const pt=document.getElementById('pt');
   pt.classList.add('on');
   setTimeout(()=>{fn();pt.classList.remove('on');},280);
 }
 
-// ── SUBMIT ────────────────────────────────────────────
+let chatHistory=[];
+let chatImgFile=null,chatImgB64=null;
+
 async function submitQuery(){
   const txt=mainInput.value.trim();
   if(txt.length<5)return;
   transitionTo(()=>{
     document.getElementById('page-home').style.display='none';
     document.getElementById('page-result').classList.add('on');
-    document.getElementById('recap-text').textContent='"'+txt+'"';
-    if(imgFile){
-      document.getElementById('recap-img').classList.add('on');
-      document.getElementById('recap-img-name').textContent=imgFile.name;
-    }
     window.scrollTo({top:0,behavior:'instant'});
   });
-  await runAI(txt);
+  addBubble('user',txt,homeImg?.name||null);
+  chatImgFile=homeImg;chatImgB64=homeImgB64;
+  await callLuna(txt,true);
 }
 
-async function runAI(userText){
-  const thinking=document.getElementById('ai-thinking');
-  const content=document.getElementById('ai-content');
-  thinking.style.display='flex';
-  content.style.display='none';
+function onChatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}}
+function onChatFile(e){
+  const f=e.target.files[0];if(!f)return;chatImgFile=f;
+  const r=new FileReader();
+  r.onload=ev=>{chatImgB64=ev.target.result.split(',')[1];document.getElementById('chat-img-name').textContent=f.name;document.getElementById('chat-img-pill').classList.add('on');};
+  r.readAsDataURL(f);
+}
+function clearChatImg(){chatImgFile=null;chatImgB64=null;document.getElementById('chat-img-pill').classList.remove('on');document.getElementById('chat-file-in').value='';}
 
-  const SYSTEM=`You are Luna, the booking assistant for Edgar Luna — renowned tattoo artist in Las Vegas. Specialties: hyperrealism, dark portraiture, geometric blackwork, black & grey realism.
+async function sendChat(){
+  const inp=document.getElementById('chat-input');
+  const txt=inp.value.trim();
+  if(!txt&&!chatImgB64)return;
+  inp.value='';inp.style.height='auto';
+  addBubble('user',txt,chatImgFile?.name||null);
+  await callLuna(txt,false);
+  clearChatImg();
+}
+
+function addBubble(role,text,imgName){
+  const wrap=document.getElementById('chat-messages');
+  const row=document.createElement('div');
+  row.className=`bubble-row ${role}`;
+  const av=`<div class="bubble-av ${role==='luna'?'luna':'user'}">${role==='luna'?'EL':'U'}</div>`;
+  let html=text?text.replace(/\n/g,'<br/>'):'';
+  if(imgName)html=`<div class="bubble-img-badge">📎 ${imgName}</div>`+(html?html:'');
+  row.innerHTML=`${role==='luna'?av:''}<div class="bubble">${html}</div>${role!=='luna'?av:''}`;
+  wrap.appendChild(row);wrap.scrollTop=wrap.scrollHeight;
+  return row;
+}
+
+function addTyping(){
+  const wrap=document.getElementById('chat-messages');
+  const row=document.createElement('div');
+  row.className='bubble-row luna';row.id='typing-row';
+  row.innerHTML=`<div class="bubble-av luna">EL</div><div class="bubble"><div class="typing-bubble"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div></div>`;
+  wrap.appendChild(row);wrap.scrollTop=wrap.scrollHeight;
+}
+function removeTyping(){document.getElementById('typing-row')?.remove();}
+
+async function callLuna(userText,isFirst){
+  document.getElementById('chat-send-btn').disabled=true;
+  addTyping();
+
+  const SYSTEM=`You are Luna, the personal assistant for Edgar Luna — tattoo artist based in Las Vegas.
+
+PERSONALITY:
+- Talk like a real person, not a bot. Warm, direct, confident. No corporate tone.
+- Respond in the SAME LANGUAGE the user writes in. Spanish → Spanish. English → English.
+- Edgar is high-demand and selective. You represent that level.
+- Never say "Great!" "Absolutely!" or hollow filler phrases.
+- Keep responses conversational — 2 to 4 short paragraphs max.
 
 EDGAR'S PRICING:
-- $200/hr · $150 minimum
-- Small (2–4 hrs, palm-sized): $400–$800
-- Medium (forearm, 5–8 hrs): $1,000–$1,600
+- $200/hr base rate · $150 minimum
+- Small (palm-sized, 2–4 hrs): $400–$800
+- Medium (forearm coverage, 5–8 hrs): $1,000–$1,600
 - Large (half sleeve, 10–20 hrs): $2,000–$4,000
 - Full sleeve (25–40 hrs): $5,000–$8,000
-- Portrait/face (4–8 hrs): $800–$1,600
-- Black & grey: ~10% less
+- Portrait / face (4–8 hrs): $800–$1,600
+- Black & grey: ~10% less than color
+- $100 non-refundable deposit to hold appointment
+- Note: 30x50cm back piece = roughly 15–25 hrs = $3,000–$5,000
 
-RESPONSE FORMAT — respond ONLY with valid JSON, no markdown, no extra text:
-{
-  "intro": "1–2 sentences reacting to their specific idea — warm, confident, no filler",
-  "estimate_low": "$X,XXX",
-  "estimate_high": "$X,XXX",
-  "estimate_note": "one line on why (complexity, size, session count)",
-  "time_estimate": "e.g. 4–6 hours / 1–2 sessions",
-  "specialties": ["up to 3 relevant style tags for their piece"],
-  "closing": "1 sentence inviting them to book — direct, no fluff"
-}`;
+EDGAR'S SPECIALTIES: Hyperrealism · Dark Portrait · Geometric Blackwork · Black & Grey
 
-  const content_msgs=[];
-  if(imgB64&&imgFile) content_msgs.push({type:'image',source:{type:'base64',media_type:imgFile.type,data:imgB64}});
-  content_msgs.push({type:'text',text:userText});
+INSTRUCTIONS:
+1. React specifically to what they described — mention the design, size, placement.
+2. Give a natural price estimate woven into your response conversationally.
+3. Mention roughly how many hours and sessions.
+4. If they want to adjust size or placement, recalculate naturally.
+5. End with a question or invitation to keep talking or book.
+
+After your conversational response, append this block at the very end (no markdown):
+|||JSON|||
+{"low":"$X,XXX","high":"$X,XXX","time":"X–X hrs / X sessions"}
+|||END|||`;
+
+  const userContent=[];
+  if(chatImgB64&&chatImgFile)userContent.push({type:'image',source:{type:'base64',media_type:chatImgFile.type,data:chatImgB64}});
+  userContent.push({type:'text',text:userText||'(image attached)'});
+  chatHistory.push({role:'user',content:userContent});
 
   try{
     const res=await fetch('/api/claude',{
       method:'POST',
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:SYSTEM,messages:[{role:'user',content:content_msgs}]})
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,system:SYSTEM,messages:chatHistory})
     });
     const data=await res.json();
-    const raw=data.content?.[0]?.text||'{}';
-    let parsed;
-    try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim())}catch{parsed=null}
-    thinking.style.display='none';
-    content.style.display='block';
-    renderResult(parsed,raw);
+    removeTyping();
+    let full=data.content?.[0]?.text||'Hubo un error. Intenta de nuevo.';
+    const jsonMatch=full.match(/\|\|\|JSON\|\|\|([\s\S]*?)\|\|\|END\|\|\|/);
+    let est=null;
+    if(jsonMatch){try{est=JSON.parse(jsonMatch[1].trim());}catch{}full=full.replace(/\|\|\|JSON\|\|\|[\s\S]*?\|\|\|END\|\|\|/,'').trim();}
+    addBubble('luna',full);
+    chatHistory.push({role:'assistant',content:full});
+    if(est)updateEstimate(est);
+    if(isFirst||est)showActions();
+    document.getElementById('chat-send-btn').disabled=false;
+    document.getElementById('chat-input').focus();
   }catch(err){
-    thinking.style.display='none';
-    content.style.display='block';
-    document.getElementById('ai-text').innerHTML='<strong>Connection issue</strong> — please try again.';
-    document.getElementById('est-block').style.display='none';
+    removeTyping();
+    addBubble('luna','Hubo un problema de conexión. Por favor intenta de nuevo.');
+    document.getElementById('chat-send-btn').disabled=false;
   }
 }
 
-function renderResult(p,raw){
-  const aiText=document.getElementById('ai-text');
-  const estBlock=document.getElementById('est-block');
-  const estFigure=document.getElementById('est-figure');
-  const estSub=document.getElementById('est-sub');
-  const estDetails=document.getElementById('est-details');
-  const specRow=document.getElementById('spec-row');
-  const actionsBlock=document.getElementById('actions-block');
-
-  if(!p){
-    aiText.textContent=raw;
-    estBlock.style.display='none';
-    setTimeout(()=>actionsBlock.classList.add('on'),400);
-    return;
-  }
-
-  aiText.innerHTML=`<strong></strong>${p.intro||''}<br/><br/>${p.closing||''}`;
-  aiText.querySelector('strong').textContent='';
-
-  estFigure.textContent=`${p.estimate_low||'—'} – ${p.estimate_high||'—'}`;
-  estSub.textContent=p.estimate_note||'';
-  estDetails.innerHTML=`
-    <div class="est-detail"><div class="est-detail-label">Time</div><div class="est-detail-val">${p.time_estimate||'—'}</div></div>
-    <div class="est-detail"><div class="est-detail-label">Rate</div><div class="est-detail-val">$200 / hr</div></div>
-    <div class="est-detail"><div class="est-detail-label">Deposit</div><div class="est-detail-val">$100</div></div>
-  `;
-
-  if(p.specialties&&p.specialties.length){
-    specRow.innerHTML=p.specialties.map(s=>`<span class="spec-chip">${s}</span>`).join('');
-  }
-
-  setTimeout(()=>estBlock.classList.add('on'),200);
-  setTimeout(()=>actionsBlock.classList.add('on'),500);
+function updateEstimate(est){
+  document.getElementById('est-price').textContent=`${est.low||'—'} – ${est.high||'—'}`;
+  document.getElementById('est-note').textContent='Estimado basado en diseño y tamaño';
+  document.getElementById('est-time').textContent=est.time||'—';
+  document.getElementById('est-card').classList.add('on');
 }
+function showActions(){document.getElementById('sb-actions').classList.add('on');}
 
-// ── BACK ──────────────────────────────────────────────
 function goHome(){
   transitionTo(()=>{
+    chatHistory=[];
+    document.getElementById('chat-messages').innerHTML='';
+    document.getElementById('est-price').textContent='—';
+    document.getElementById('est-note').textContent='Send your idea to get a quote';
+    document.getElementById('est-time').textContent='—';
+    document.getElementById('est-card').classList.remove('on');
+    document.getElementById('sb-actions').classList.remove('on');
     document.getElementById('page-result').classList.remove('on');
-    document.getElementById('page-result').style.display='';
     document.getElementById('page-home').style.display='';
-    // reset result state
-    document.getElementById('ai-thinking').style.display='flex';
-    document.getElementById('ai-content').style.display='none';
-    document.getElementById('est-block').classList.remove('on');
-    document.getElementById('actions-block').classList.remove('on');
-    document.getElementById('recap-img').classList.remove('on');
+    homeImg=null;homeImgB64=null;
+    document.getElementById('img-pill').classList.remove('on');
+    mainInput.value='';submitBtn.disabled=true;
     window.scrollTo({top:0,behavior:'instant'});
   });
 }
 
-// ── BOOKING MODAL ─────────────────────────────────────
-function showContact(){document.getElementById('booking-modal').style.display='block';window.scrollTo({top:0})}
+function showContact(){document.getElementById('booking-modal').style.display='block';}
 function submitBooking(){
   const n=document.getElementById('bk-name').value.trim();
   const e=document.getElementById('bk-email').value.trim();

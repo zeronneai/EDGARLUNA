@@ -382,66 +382,6 @@ html,body {
   justify-content: center;
 }
 
-/* ── 3D Logo ── */
-.lp-hero-content {
-  padding-top: 5rem;
-}
-.lp-hero-logo-wrap {
-  perspective: 900px;
-  perspective-origin: 50% 50%;
-  margin: 0 auto 2.5rem;
-  width: min(500px, 78vw);
-  cursor: none;
-}
-.lp-hero-logo-card {
-  width: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  will-change: transform;
-  transition: transform 0.08s linear;
-  animation: logoFloat 5s ease-in-out infinite;
-}
-@keyframes logoFloat {
-  0%,100% { transform: translateY(0px) rotateX(0deg); }
-  50%      { transform: translateY(-12px) rotateX(1deg); }
-}
-.lp-hero-logo-card:hover { animation-play-state: paused; }
-.lp-hero-logo-img {
-  width: 100%;
-  display: block;
-  position: relative;
-  z-index: 2;
-  filter:
-    drop-shadow(0 0 40px rgba(196,189,180,0.3))
-    drop-shadow(0 0 100px rgba(139,32,32,0.18))
-    drop-shadow(0 30px 60px rgba(0,0,0,0.9));
-}
-.lp-hero-logo-glow {
-  position: absolute;
-  inset: -30% -20%;
-  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(139,32,32,0.22) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 1;
-  animation: glowPulse 4s ease-in-out infinite;
-}
-@keyframes glowPulse {
-  0%,100% { opacity: 0.7; }
-  50%      { opacity: 1; }
-}
-.lp-hero-logo-reflect {
-  position: absolute;
-  bottom: -18%;
-  left: 5%;
-  right: 5%;
-  height: 35%;
-  background: radial-gradient(ellipse at 50% 0%, rgba(196,189,180,0.12) 0%, transparent 70%);
-  filter: blur(16px);
-  pointer-events: none;
-  z-index: 1;
-  transform: translateZ(-20px) scaleY(0.5);
-  transform-origin: top center;
-}
-
 /* gallery image tiles */
 .gal-item img {
   width: 100%;
@@ -567,14 +507,16 @@ html,body {
   background: linear-gradient(to bottom, var(--white-3), transparent);
 }
 
-/* ── Stats strip ── */
+/* ── Stats strip — glass ── */
 .lp-stats {
   display: flex;
   align-items: stretch;
   justify-content: center;
-  background: rgba(8,8,8,0.82);
-  border-top: 1px solid var(--black-4);
-  border-bottom: 1px solid var(--black-4);
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
 }
 .lp-stat {
   display: flex;
@@ -585,9 +527,9 @@ html,body {
   padding: 2.5rem 3.5rem;
   flex: 1;
   min-width: 140px;
-  transition: background 0.3s;
+  transition: background 0.4s;
 }
-.lp-stat:hover { background: var(--black-3); }
+.lp-stat:hover { background: rgba(255,255,255,0.04); }
 .lp-stat-num {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: clamp(2.2rem, 4vw, 3.8rem);
@@ -602,26 +544,33 @@ html,body {
   font-weight: 300;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--white-3);
+  color: rgba(240,235,227,0.45);
   text-align: center;
 }
 .lp-stat-div {
   width: 1px;
-  background: var(--black-4);
+  background: rgba(255,255,255,0.07);
   flex-shrink: 0;
   align-self: stretch;
 }
 
 /* ── Shared section primitives ── */
 .lp-eyebrow {
-  display: block;
+  display: inline-flex;
+  align-items: center;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.6rem;
-  font-weight: 400;
+  font-size: 0.58rem;
+  font-weight: 500;
   letter-spacing: 0.45em;
   text-transform: uppercase;
-  color: var(--cement);
-  margin-bottom: 0.75rem;
+  color: rgba(196,189,180,0.85);
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 100px;
+  padding: 0.3rem 1rem;
+  margin-bottom: 1.25rem;
 }
 .lp-section-title {
   font-family: 'Barlow Condensed', sans-serif;
@@ -637,7 +586,9 @@ html,body {
 /* ── Work / Gallery ── */
 .lp-work {
   padding: 8rem 3rem;
-  background: rgba(8,8,8,0.90);
+  background: rgba(4,4,4,0.78);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 .lp-work-inner { max-width: 1400px; margin: 0 auto; }
 .gallery-grid {
@@ -679,25 +630,31 @@ html,body {
   flex-wrap: wrap;
   gap: 1.5rem;
   padding-top: 2rem;
-  border-top: 1px solid var(--black-4);
+  border-top: 1px solid rgba(255,255,255,0.07);
 }
 .lp-work-styles { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .lp-style-tag {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--white-3);
-  border: 1px solid var(--black-4);
-  padding: 0.3rem 0.75rem;
+  color: rgba(196,189,180,0.7);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 100px;
+  padding: 0.28rem 0.8rem;
+  transition: background 0.3s, color 0.3s;
 }
+.lp-style-tag:hover { background: rgba(255,255,255,0.07); color: var(--white); }
 
 /* ── Manifesto ── */
 .lp-manifesto {
   position: relative;
   padding: 10rem 3rem;
-  background: rgba(4,4,4,0.88);
+  background: rgba(4,4,4,0.80);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
   overflow: hidden;
 }
 .lp-manifesto::before {
@@ -779,28 +736,44 @@ html,body {
 /* ── How It Works ── */
 .lp-process {
   padding: 8rem 3rem;
-  background: rgba(14,14,14,0.87);
-  border-top: 1px solid rgba(42,42,42,0.6);
-  border-bottom: 1px solid rgba(42,42,42,0.6);
+  background: rgba(4,4,4,0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .lp-process-inner { max-width: 1100px; margin: 0 auto; }
 .lp-steps {
   display: flex;
   align-items: stretch;
   margin-bottom: 3.5rem;
-  gap: 0;
+  gap: 12px;
 }
 .lp-step {
   flex: 1;
   padding: 3rem 2.5rem;
-  background: var(--black);
-  border: 1px solid var(--black-4);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 2px;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  transition: border-color 0.3s;
+  transition: background 0.4s, border-color 0.4s;
+  position: relative;
+  overflow: hidden;
 }
-.lp-step:hover { border-color: var(--black-5); }
+.lp-step::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.lp-step:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.13); }
+.lp-step:hover::before { opacity: 1; }
 .lp-step-num {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 0.58rem;
@@ -843,11 +816,14 @@ html,body {
   font-size: 0.68rem;
   font-weight: 300;
   letter-spacing: 0.18em;
-  color: var(--white-3);
+  color: rgba(240,235,227,0.55);
   text-align: center;
   padding: 2rem;
-  border: 1px solid var(--black-4);
-  background: var(--black-3);
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 2px;
   line-height: 1.8;
 }
 .lp-process-note strong { color: var(--cement); font-weight: 600; }
@@ -855,25 +831,41 @@ html,body {
 /* ── Testimonials ── */
 .lp-testimonials {
   padding: 8rem 3rem;
-  background: rgba(8,8,8,0.88);
+  background: rgba(4,4,4,0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 .lp-testimonials-inner { max-width: 1100px; margin: 0 auto; }
 .lp-testimonials-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
+  gap: 12px;
 }
 .lp-testimonial {
   padding: 2.75rem;
-  background: var(--black-2);
-  border: 1px solid var(--black-4);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 2px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 2rem;
-  transition: border-color 0.3s;
+  transition: background 0.4s, border-color 0.4s;
+  position: relative;
+  overflow: hidden;
 }
-.lp-testimonial:hover { border-color: var(--black-5); }
+.lp-testimonial::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.lp-testimonial:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.13); }
+.lp-testimonial:hover::before { opacity: 1; }
 .lp-testimonial-stars {
   display: flex;
   gap: 3px;
@@ -917,8 +909,10 @@ html,body {
 /* ── Edgar Bio ── */
 .lp-bio {
   padding: 8rem 3rem;
-  background: rgba(14,14,14,0.87);
-  border-top: 1px solid rgba(42,42,42,0.6);
+  background: rgba(4,4,4,0.78);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255,255,255,0.06);
 }
 .lp-bio-inner {
   max-width: 1100px;
@@ -1019,7 +1013,9 @@ html,body {
 /* ── AI Quote CTA section ── */
 .lp-quote {
   padding: 10rem 3rem;
-  background: rgba(4,4,4,0.84);
+  background: rgba(4,4,4,0.76);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
   position: relative;
   overflow: hidden;
 }
@@ -1090,13 +1086,17 @@ html,body {
 /* ── Scroll reveal animation ── */
 .lp-reveal {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1);
+  transform: translateY(56px);
+  filter: blur(4px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+    transform 0.9s cubic-bezier(0.16,1,0.3,1),
+    filter 0.9s cubic-bezier(0.16,1,0.3,1);
 }
-.lp-reveal.visible { opacity: 1; transform: translateY(0); }
-.lp-reveal-delay-1 { transition-delay: 0.1s; }
-.lp-reveal-delay-2 { transition-delay: 0.2s; }
-.lp-reveal-delay-3 { transition-delay: 0.3s; }
+.lp-reveal.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+.lp-reveal-delay-1 { transition-delay: 0.14s; }
+.lp-reveal-delay-2 { transition-delay: 0.28s; }
+.lp-reveal-delay-3 { transition-delay: 0.42s; }
 
 
 /* CHAT PAGE */
@@ -1363,21 +1363,7 @@ html,body {
 
     <div class="lp-hero-content">
       <div class="lp-hero-eyebrow">Las Vegas · By Appointment Only · Est. 2010</div>
-
-      <!-- 3D Floating Logo -->
-      <div class="lp-hero-logo-wrap" id="logo3d-wrap">
-        <div class="lp-hero-logo-card" id="logo3d-card">
-          <div class="lp-hero-logo-glow" aria-hidden="true"></div>
-          <img
-            class="lp-hero-logo-img"
-            src="https://res.cloudinary.com/dsprn0ew4/image/upload/v1778348042/ChatGPT_Image_May_9_2026_10_28_58_AM_loiusu.png"
-            alt="Edgar Luna — Luna Tattoo Studio"
-            loading="eager"
-          />
-          <div class="lp-hero-logo-reflect" aria-hidden="true"></div>
-        </div>
-      </div>
-
+      <h1 class="lp-hero-title">INK THAT<br/><em>OUTLIVES</em><br/>TRENDS</h1>
       <p class="lp-hero-sub">Hyperrealism · Dark Portraiture · Blackwork · Black &amp; Grey</p>
       <div class="lp-hero-btns">
         <a class="lp-btn-ghost" href="#lp-work" onclick="event.preventDefault();document.getElementById('lp-work').scrollIntoView({behavior:'smooth'})">
@@ -2068,36 +2054,6 @@ float cnoise(vec3 P){
     renderer.render(scene, camera);
   }
   animate();
-})();
-
-// ── Logo 3D mouse parallax ──
-(function() {
-  const wrap = document.getElementById('logo3d-wrap');
-  const card = document.getElementById('logo3d-card');
-  if (!wrap || !card) return;
-  const MAX = 18; // max tilt degrees
-  let currentX = 0, currentY = 0, targetX = 0, targetY = 0, rafId;
-
-  function lerp(a, b, t) { return a + (b - a) * t; }
-
-  function onMove(e) {
-    const r = wrap.getBoundingClientRect();
-    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-    const dx = (e.clientX - cx) / (window.innerWidth / 2);
-    const dy = (e.clientY - cy) / (window.innerHeight / 2);
-    targetX = -dy * MAX;
-    targetY =  dx * MAX;
-  }
-
-  function loop() {
-    rafId = requestAnimationFrame(loop);
-    currentX = lerp(currentX, targetX, 0.09);
-    currentY = lerp(currentY, targetY, 0.09);
-    card.style.transform = `rotateX(${currentX}deg) rotateY(${currentY}deg)`;
-  }
-
-  window.addEventListener('mousemove', onMove, { passive: true });
-  loop();
 })();
 
 // Scroll reveal

@@ -35,6 +35,14 @@ html,body {
 /* ── 3D ROOM ── */
 #page-home {
   position: relative;
+  display: block;
+  background: var(--black);
+  overflow-x: hidden;
+}
+
+/* Hero wraps the 3D room scene */
+.lp-hero {
+  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -460,25 +468,665 @@ html,body {
   height: 1px;
   background: var(--black-4);
 }
-.gallery-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:3px;
+/* ══════════════════════════════════════════
+   LANDING PAGE — SECTION STYLES
+══════════════════════════════════════════ */
+
+/* ── Hero content layer ── */
+.lp-hero-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 7rem 2rem 5rem;
+  width: 100%;
+  max-width: 960px;
 }
-.gal-item{
-  aspect-ratio:1;background:var(--c,#1a1a1a);
-  position:relative;overflow:hidden;cursor:pointer;
+.lp-hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--cement);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
 }
-.gal-item::after{
-  content:'';position:absolute;inset:0;
-  background:rgba(8,8,8,0.4);transition:opacity 0.4s;
+.lp-hero-eyebrow::before,
+.lp-hero-eyebrow::after {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--cement);
+  opacity: 0.4;
 }
-.gal-item:hover::after{opacity:0}
-.gal-placeholder{
-  width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;
+.lp-hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(4.5rem, 11vw, 10.5rem);
+  font-weight: 700;
+  line-height: 0.87;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 1.75rem;
+  text-shadow: 0 4px 60px rgba(0,0,0,0.95);
 }
-.gal-placeholder svg{width:28px;height:28px;stroke:rgba(196,189,180,0.2);fill:none;stroke-width:1}
+.lp-hero-title em { font-style: normal; color: var(--cement); }
+.lp-hero-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.4em;
+  color: var(--white-3);
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+.lp-hero-btns {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.lp-btn-primary {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--white);
+  border: none;
+  padding: 0.95rem 2.2rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.lp-btn-primary:hover { background: var(--cement); }
+.lp-btn-ghost {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--white-2);
+  background: transparent;
+  border: 1px solid rgba(196,189,180,0.28);
+  padding: 0.95rem 2.2rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.lp-btn-ghost:hover { border-color: rgba(196,189,180,0.65); color: var(--white); }
+.lp-scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: scrollPulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.25; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 0.6; transform: translateX(-50%) translateY(7px); }
+}
+.lp-scroll-hint span {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--white-3);
+}
+.lp-scroll-line {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, var(--white-3), transparent);
+}
+
+/* ── Stats strip ── */
+.lp-stats {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: var(--black-2);
+  border-top: 1px solid var(--black-4);
+  border-bottom: 1px solid var(--black-4);
+}
+.lp-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 2.5rem 3.5rem;
+  flex: 1;
+  min-width: 140px;
+  transition: background 0.3s;
+}
+.lp-stat:hover { background: var(--black-3); }
+.lp-stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--white);
+  line-height: 1;
+}
+.lp-stat-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--white-3);
+  text-align: center;
+}
+.lp-stat-div {
+  width: 1px;
+  background: var(--black-4);
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+/* ── Shared section primitives ── */
+.lp-eyebrow {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--cement);
+  margin-bottom: 0.75rem;
+}
+.lp-section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 0.9;
+}
+.lp-section-header { margin-bottom: 4rem; }
+
+/* ── Work / Gallery ── */
+.lp-work {
+  padding: 8rem 3rem;
+  background: var(--black);
+}
+.lp-work-inner { max-width: 1400px; margin: 0 auto; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  margin-bottom: 2rem;
+}
+.gal-item {
+  height: 260px;
+  background: var(--c, #1a1a1a);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.gal-item:nth-child(3n+1) { height: 340px; }
+.gal-item:hover { transform: scale(1.015); z-index: 2; }
+.gal-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(5,5,5,0.45);
+  transition: opacity 0.4s;
+}
+.gal-item:hover::after { opacity: 0.05; }
+.gal-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gal-placeholder svg { width: 28px; height: 28px; stroke: rgba(196,189,180,0.15); fill: none; stroke-width: 1; }
+.lp-work-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--black-4);
+}
+.lp-work-styles { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.lp-style-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white-3);
+  border: 1px solid var(--black-4);
+  padding: 0.3rem 0.75rem;
+}
+
+/* ── Manifesto ── */
+.lp-manifesto {
+  position: relative;
+  padding: 10rem 3rem;
+  background: #020202;
+  overflow: hidden;
+}
+.lp-manifesto::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(196,189,180,0.25), transparent);
+}
+.lp-manifesto::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(196,189,180,0.25), transparent);
+}
+.lp-manifesto-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(8rem, 22vw, 24rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: rgba(196,189,180,0.022);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+}
+.lp-manifesto-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.lp-manifesto-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.lp-manifesto-tag::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--red);
+  opacity: 0.6;
+}
+.lp-manifesto-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(3.8rem, 9vw, 8.5rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 0.88;
+  margin-bottom: 2.5rem;
+}
+.lp-manifesto-body {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--white-3);
+  line-height: 1.75;
+  max-width: 520px;
+  margin-bottom: 3.5rem;
+}
+
+/* ── How It Works ── */
+.lp-process {
+  padding: 8rem 3rem;
+  background: var(--black-2);
+  border-top: 1px solid var(--black-4);
+  border-bottom: 1px solid var(--black-4);
+}
+.lp-process-inner { max-width: 1100px; margin: 0 auto; }
+.lp-steps {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 3.5rem;
+  gap: 0;
+}
+.lp-step {
+  flex: 1;
+  padding: 3rem 2.5rem;
+  background: var(--black);
+  border: 1px solid var(--black-4);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.3s;
+}
+.lp-step:hover { border-color: var(--black-5); }
+.lp-step-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  color: var(--red);
+}
+.lp-step-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 1.1;
+}
+.lp-step-body {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 300;
+  letter-spacing: 0.03em;
+  color: var(--white-3);
+  line-height: 1.75;
+  flex: 1;
+}
+.lp-step-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.2rem;
+  padding-top: 3.5rem;
+  color: var(--black-5);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 300;
+  flex-shrink: 0;
+}
+.lp-process-note {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  color: var(--white-3);
+  text-align: center;
+  padding: 2rem;
+  border: 1px solid var(--black-4);
+  background: var(--black-3);
+  line-height: 1.8;
+}
+.lp-process-note strong { color: var(--cement); font-weight: 600; }
+
+/* ── Testimonials ── */
+.lp-testimonials {
+  padding: 8rem 3rem;
+  background: var(--black);
+}
+.lp-testimonials-inner { max-width: 1100px; margin: 0 auto; }
+.lp-testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.lp-testimonial {
+  padding: 2.75rem;
+  background: var(--black-2);
+  border: 1px solid var(--black-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  transition: border-color 0.3s;
+}
+.lp-testimonial:hover { border-color: var(--black-5); }
+.lp-testimonial-stars {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 0.75rem;
+}
+.lp-star {
+  width: 10px;
+  height: 10px;
+  background: var(--cement);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+.lp-testimonial-quote {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 300;
+  letter-spacing: 0.03em;
+  color: var(--white-2);
+  line-height: 1.8;
+  font-style: italic;
+  flex: 1;
+}
+.lp-testimonial-author { border-top: 1px solid var(--black-4); padding-top: 1.25rem; }
+.lp-testimonial-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.lp-testimonial-detail {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white-3);
+  margin-top: 0.25rem;
+}
+
+/* ── Edgar Bio ── */
+.lp-bio {
+  padding: 8rem 3rem;
+  background: var(--black-2);
+  border-top: 1px solid var(--black-4);
+}
+.lp-bio-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7rem;
+  align-items: center;
+}
+.lp-bio-visual {
+  position: relative;
+  height: 540px;
+  background: var(--black-3);
+  border: 1px solid var(--black-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.lp-bio-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5,5,5,0.6) 0%, transparent 40%);
+}
+.lp-bio-badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--cement);
+  border: 1px solid rgba(196,189,180,0.25);
+  padding: 0.3rem 0.65rem;
+  z-index: 2;
+}
+.lp-bio-label {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--white-3);
+  z-index: 2;
+}
+.lp-bio-visual-ph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0.12;
+}
+.lp-bio-visual-ph svg { width: 64px; height: 64px; }
+.lp-bio-content {}
+.lp-bio-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 0.9;
+  margin-bottom: 2rem;
+}
+.lp-bio-title em { font-style: normal; color: var(--cement); }
+.lp-bio-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 300;
+  letter-spacing: 0.03em;
+  color: var(--white-3);
+  line-height: 1.85;
+  margin-bottom: 1.5rem;
+}
+.lp-bio-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+.lp-bio-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cement);
+  border: 1px solid rgba(196,189,180,0.2);
+  padding: 0.3rem 0.75rem;
+}
+
+/* ── AI Quote CTA section ── */
+.lp-quote {
+  padding: 10rem 3rem;
+  background: #020202;
+  position: relative;
+  overflow: hidden;
+}
+.lp-quote::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(139,32,32,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.lp-quote::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(196,189,180,0.2), transparent);
+}
+.lp-quote-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.lp-quote-eyebrow {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 1rem;
+}
+.lp-quote-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 0.92;
+  margin-bottom: 1.25rem;
+}
+.lp-quote-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: var(--white-3);
+  line-height: 1.75;
+  margin-bottom: 3.5rem;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.lp-quote-disclaimer {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--black-5);
+  margin-top: 2rem;
+}
+
+/* ── Scroll reveal animation ── */
+.lp-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1);
+}
+.lp-reveal.visible { opacity: 1; transform: translateY(0); }
+.lp-reveal-delay-1 { transition-delay: 0.1s; }
+.lp-reveal-delay-2 { transition-delay: 0.2s; }
+.lp-reveal-delay-3 { transition-delay: 0.3s; }
 
 
 /* CHAT PAGE */
@@ -695,15 +1343,29 @@ html,body {
 .page-transition.on{opacity:1;pointer-events:all}
 
 /* RESPONSIVE */
+@media(max-width:900px){
+  .lp-bio-inner{grid-template-columns:1fr;gap:3rem}
+  .lp-bio-visual{height:320px}
+  .lp-steps{flex-direction:column}
+  .lp-step-connector{padding:0.75rem 0;font-size:1.5rem;writing-mode:horizontal-tb;transform:rotate(90deg)}
+  .lp-testimonials-grid{grid-template-columns:1fr;gap:2px}
+}
 @media(max-width:700px){
   .home-nav,.chat-topbar{padding:1.25rem 1.5rem}
-  .home-center{padding:6rem 1.5rem 3rem}
-  .card-actions{flex-wrap:wrap}
-  .gallery-grid{grid-template-columns:repeat(3,1fr)}
-  .home-title{font-size:2.6rem}
+  .lp-hero-content{padding:6rem 1.5rem 4rem}
+  .lp-hero-title{font-size:clamp(3rem,14vw,5rem)}
   .room-wall-left,.room-wall-right,.room-perspective{display:none}
-  .home-bottom-btns{gap:0.75rem}
-  .home-ghost-btn{padding:0.75rem 1.2rem;font-size:0.65rem}
+  .lp-stats{flex-wrap:wrap;padding:2rem 1.5rem}
+  .lp-stat{padding:1.5rem 2rem;min-width:50%}
+  .lp-stat-div{display:none}
+  .lp-work,.lp-manifesto,.lp-process,.lp-testimonials,.lp-bio,.lp-quote{padding:5rem 1.5rem}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .gal-item,.gal-item:nth-child(3n+1){height:180px}
+  .lp-manifesto-title{font-size:clamp(2.5rem,10vw,4rem)}
+  .lp-hero-btns{flex-direction:column;align-items:stretch}
+  .lp-btn-primary,.lp-btn-ghost{justify-content:center}
+  .lp-work-footer{flex-direction:column}
+  .card-actions{flex-wrap:wrap}
   .chat-layout{grid-template-columns:1fr}
   .chat-sidebar{display:none}
   .chat-messages{padding:1.25rem}
@@ -719,107 +1381,269 @@ html,body {
 <!-- ═══════════════════════════ HOME ═══════════════════════════ -->
 <div id="page-home">
 
-  <!-- 3D Room elements -->
-  <div class="room-bg"></div>
-  <div class="room-grid"></div>
-
-  <div class="room-perspective">
-    <div class="room-wall-left">
-      <div class="wall-frame frame-l1">
-        <div class="wall-frame-inner">
-          <svg viewBox="0 0 80 120" width="80" height="120"><rect x="10" y="10" width="60" height="100" stroke="rgba(196,189,180,0.4)" stroke-width="0.5" fill="none"/><line x1="10" y1="10" x2="70" y2="110" stroke="rgba(196,189,180,0.2)" stroke-width="0.5"/><line x1="70" y1="10" x2="10" y2="110" stroke="rgba(196,189,180,0.2)" stroke-width="0.5"/></svg>
-        </div>
-      </div>
-      <div class="wall-frame frame-l2">
-        <div class="wall-frame-inner">
-          <svg viewBox="0 0 60 80" width="40" height="60"><circle cx="30" cy="40" r="20" stroke="rgba(196,189,180,0.3)" stroke-width="0.5" fill="none"/></svg>
-        </div>
-      </div>
-    </div>
-    <div class="room-wall-right">
-      <div class="wall-frame frame-r1">
-        <div class="wall-frame-inner">
-          <svg viewBox="0 0 80 120" width="80" height="120"><rect x="10" y="10" width="60" height="100" stroke="rgba(196,189,180,0.4)" stroke-width="0.5" fill="none"/><line x1="10" y1="10" x2="70" y2="110" stroke="rgba(196,189,180,0.2)" stroke-width="0.5"/><line x1="70" y1="10" x2="10" y2="110" stroke="rgba(196,189,180,0.2)" stroke-width="0.5"/></svg>
-        </div>
-      </div>
-      <div class="wall-frame frame-r2">
-        <div class="wall-frame-inner">
-          <svg viewBox="0 0 60 80" width="40" height="60"><circle cx="30" cy="40" r="20" stroke="rgba(196,189,180,0.3)" stroke-width="0.5" fill="none"/></svg>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-floor"></div>
-  <div class="room-ceiling"></div>
-  <div class="spotlight-left"></div>
-  <div class="spotlight-right"></div>
-  <div class="room-vignette"></div>
-
-  <!-- Fixed nav -->
-  <nav class="home-nav">
+  <!-- ── FIXED NAV ── -->
+  <nav class="home-nav" aria-label="Primary navigation">
     <div class="logo">Edgar <em>Luna</em></div>
-    <a class="nav-ig" href="https://instagram.com/officialedgarluna" target="_blank">@officialedgarluna</a>
+    <a class="nav-ig" href="https://instagram.com/officialedgarluna" target="_blank" rel="noopener">@officialedgarluna</a>
   </nav>
 
-  <!-- Center content -->
-  <div class="home-center">
-
-    <div class="logo-icon">
-      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="24,4 44,40 4,40" stroke="#c4bdb4" stroke-width="1" fill="none"/>
-        <circle cx="24" cy="26" r="8" stroke="#c4bdb4" stroke-width="1" fill="none"/>
-        <line x1="24" y1="18" x2="24" y2="4" stroke="#c4bdb4" stroke-width="1"/>
-        <line x1="24" y1="34" x2="24" y2="40" stroke="#c4bdb4" stroke-width="0.5" stroke-dasharray="2,2"/>
-      </svg>
-    </div>
-
-    <h1 class="home-title">What do you want<br/>to <em>carry forever</em>?</h1>
-    <p class="home-sub">Las Vegas · Tattoo Artist · Est. 2010</p>
-
-    <div class="input-card">
-      <div class="card-question">Describe your tattoo idea</div>
-      <textarea
-        class="main-textarea"
-        id="main-input"
-        placeholder="e.g. Realistic angel, forearm, about 6 inches tall..."
-        rows="3"
-        onkeydown="handleEnter(event)"
-      ></textarea>
-      <div class="card-actions">
-        <div style="display:flex;align-items:center;gap:0.75rem;flex:1;min-width:0">
-          <label for="file-in" class="attach-btn">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-            Add reference
-          </label>
-          <input type="file" id="file-in" accept="image/*" onchange="onFile(event)"/>
-          <div class="img-pill" id="img-pill">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <span class="img-pill-name" id="img-pill-name"></span>
-            <button class="rm-img" onclick="clearImg()" type="button">✕</button>
+  <!-- ════════ SECTION 1: HERO — 3D VAULT ════════ -->
+  <section class="lp-hero" aria-label="Hero">
+    <div class="room-bg" aria-hidden="true"></div>
+    <div class="room-grid" aria-hidden="true"></div>
+    <div class="room-perspective" aria-hidden="true">
+      <div class="room-wall-left">
+        <div class="wall-frame frame-l1">
+          <div class="wall-frame-inner">
+            <svg viewBox="0 0 80 120" width="80" height="120" aria-hidden="true"><rect x="10" y="10" width="60" height="100" stroke="rgba(196,189,180,0.4)" stroke-width="0.5" fill="none"/><line x1="10" y1="10" x2="70" y2="110" stroke="rgba(196,189,180,0.2)" stroke-width="0.5"/><line x1="70" y1="10" x2="10" y2="110" stroke="rgba(196,189,180,0.2)" stroke-width="0.5"/></svg>
           </div>
         </div>
-        <button class="submit-btn" id="submit-btn" onclick="submitQuery()" disabled>
-          Get Estimate
-          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </button>
+        <div class="wall-frame frame-l2">
+          <div class="wall-frame-inner">
+            <svg viewBox="0 0 60 80" width="40" height="60" aria-hidden="true"><circle cx="30" cy="40" r="20" stroke="rgba(196,189,180,0.3)" stroke-width="0.5" fill="none"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="room-wall-right">
+        <div class="wall-frame frame-r1">
+          <div class="wall-frame-inner">
+            <svg viewBox="0 0 80 120" width="80" height="120" aria-hidden="true"><rect x="10" y="10" width="60" height="100" stroke="rgba(196,189,180,0.4)" stroke-width="0.5" fill="none"/><line x1="10" y1="10" x2="70" y2="110" stroke="rgba(196,189,180,0.2)" stroke-width="0.5"/><line x1="70" y1="10" x2="10" y2="110" stroke="rgba(196,189,180,0.2)" stroke-width="0.5"/></svg>
+          </div>
+        </div>
+        <div class="wall-frame frame-r2">
+          <div class="wall-frame-inner">
+            <svg viewBox="0 0 60 80" width="40" height="60" aria-hidden="true"><circle cx="30" cy="40" r="20" stroke="rgba(196,189,180,0.3)" stroke-width="0.5" fill="none"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="room-floor" aria-hidden="true"></div>
+    <div class="room-ceiling" aria-hidden="true"></div>
+    <div class="spotlight-left" aria-hidden="true"></div>
+    <div class="spotlight-right" aria-hidden="true"></div>
+    <div class="room-vignette" aria-hidden="true"></div>
+
+    <div class="lp-hero-content">
+      <div class="lp-hero-eyebrow">Las Vegas · By Appointment Only · Est. 2010</div>
+      <h1 class="lp-hero-title">INK THAT<br/><em>OUTLIVES</em><br/>TRENDS</h1>
+      <p class="lp-hero-sub">Hyperrealism · Dark Portraiture · Blackwork · Black &amp; Grey</p>
+      <div class="lp-hero-btns">
+        <a class="lp-btn-ghost" href="#lp-work" onclick="event.preventDefault();document.getElementById('lp-work').scrollIntoView({behavior:'smooth'})">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="1.5" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          View The Work
+        </a>
+        <a class="lp-btn-primary" href="#get-quote" onclick="event.preventDefault();document.getElementById('get-quote').scrollIntoView({behavior:'smooth'});setTimeout(function(){document.getElementById('main-input').focus()},700)">
+          Get Your Quote
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
       </div>
     </div>
 
-    <div class="home-bottom-btns">
-      <a class="home-ghost-btn" href="#gallery" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'});return false;">View Artist Portfolio</a>
-      <button class="home-ghost-btn" onclick="document.getElementById('main-input').focus()">Book Your Session</button>
+    <div class="lp-scroll-hint" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="lp-scroll-line"></div>
     </div>
+  </section>
 
-  </div>
+  <!-- ════════ SECTION 2: CREDIBILITY STRIP ════════ -->
+  <section class="lp-stats" aria-label="Artist credentials">
+    <div class="lp-stat">
+      <span class="lp-stat-num">35K+</span>
+      <span class="lp-stat-label">Instagram Followers</span>
+    </div>
+    <div class="lp-stat-div" aria-hidden="true"></div>
+    <div class="lp-stat">
+      <span class="lp-stat-num">10+</span>
+      <span class="lp-stat-label">Years of Craft</span>
+    </div>
+    <div class="lp-stat-div" aria-hidden="true"></div>
+    <div class="lp-stat">
+      <span class="lp-stat-num">500+</span>
+      <span class="lp-stat-label">Custom Pieces</span>
+    </div>
+    <div class="lp-stat-div" aria-hidden="true"></div>
+    <div class="lp-stat">
+      <span class="lp-stat-num">OEF</span>
+      <span class="lp-stat-label">US Army Veteran</span>
+    </div>
+  </section>
 
-  <a class="home-ig-link" href="https://instagram.com/officialedgarluna" target="_blank">@officialedgarluna</a>
+  <!-- ════════ SECTION 3: SIGNATURE WORK ════════ -->
+  <section class="lp-work" id="lp-work">
+    <div class="lp-work-inner">
+      <div class="lp-section-header lp-reveal">
+        <span class="lp-eyebrow">Portfolio</span>
+        <h2 class="lp-section-title">SIGNATURE<br/>WORK</h2>
+      </div>
+      <div class="gallery-grid" id="gallery-grid"></div>
+      <div class="lp-work-footer lp-reveal lp-reveal-delay-1">
+        <div class="lp-work-styles">
+          <span class="lp-style-tag">Hyperrealism</span>
+          <span class="lp-style-tag">Dark Portrait</span>
+          <span class="lp-style-tag">Geometric Blackwork</span>
+          <span class="lp-style-tag">Black &amp; Grey</span>
+          <span class="lp-style-tag">Custom Design</span>
+        </div>
+        <a class="lp-btn-ghost" href="https://instagram.com/officialedgarluna" target="_blank" rel="noopener">View Full Portfolio</a>
+      </div>
+    </div>
+  </section>
 
-  <!-- Gallery -->
-  <div id="gallery" style="position:relative;z-index:10;width:100%;padding:5rem 3rem;border-top:1px solid rgba(196,189,180,0.08)">
-    <div class="gallery-label">Selected Works</div>
-    <div class="gallery-grid" id="gallery-grid"></div>
-  </div>
+  <!-- ════════ SECTION 4: MANIFESTO ════════ -->
+  <section class="lp-manifesto">
+    <div class="lp-manifesto-bg" aria-hidden="true">LUNA</div>
+    <div class="lp-manifesto-inner">
+      <div class="lp-manifesto-tag lp-reveal">The Edgar Luna Standard</div>
+      <h2 class="lp-manifesto-title lp-reveal lp-reveal-delay-1">EDGAR DOESN'T<br/>DO GENERIC INK.</h2>
+      <p class="lp-manifesto-body lp-reveal lp-reveal-delay-2">Every piece is built from scratch. No flash. No copies. No "just something small with no concept." If you arrive with a real vision — Edgar has the craft to execute it at a level most artists won't attempt.</p>
+      <a class="lp-btn-primary lp-reveal lp-reveal-delay-3" href="#get-quote" onclick="event.preventDefault();document.getElementById('get-quote').scrollIntoView({behavior:'smooth'});setTimeout(function(){document.getElementById('main-input').focus()},700)">
+        Start Your Concept
+        <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ════════ SECTION 5: HOW IT WORKS ════════ -->
+  <section class="lp-process">
+    <div class="lp-process-inner">
+      <div class="lp-section-header lp-reveal">
+        <span class="lp-eyebrow">No wasted meetings. No guessing.</span>
+        <h2 class="lp-section-title">HOW IT<br/>WORKS</h2>
+      </div>
+      <div class="lp-steps">
+        <div class="lp-step lp-reveal">
+          <span class="lp-step-num">01</span>
+          <h3 class="lp-step-title">Describe Your Vision</h3>
+          <p class="lp-step-body">Tell our AI about your idea — size, placement, style, references. No appointment. No back-and-forth. Takes 60 seconds.</p>
+        </div>
+        <div class="lp-step-connector" aria-hidden="true">→</div>
+        <div class="lp-step lp-reveal lp-reveal-delay-1">
+          <span class="lp-step-num">02</span>
+          <h3 class="lp-step-title">Get an Instant Estimate</h3>
+          <p class="lp-step-body">Receive a real price range, time estimate, and session breakdown instantly. Know exactly what you're walking into before you commit.</p>
+        </div>
+        <div class="lp-step-connector" aria-hidden="true">→</div>
+        <div class="lp-step lp-reveal lp-reveal-delay-2">
+          <span class="lp-step-num">03</span>
+          <h3 class="lp-step-title">Lock In Your Date</h3>
+          <p class="lp-step-body">Serious clients confirm with a $100 deposit. Edgar reviews your concept and books you in. No time wasted on either side.</p>
+        </div>
+      </div>
+      <div class="lp-process-note lp-reveal">
+        <strong>Serious clients only.</strong> The quote system pre-qualifies every request — Edgar works exclusively with clients who come prepared with a clear vision.
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ SECTION 6: TESTIMONIALS ════════ -->
+  <section class="lp-testimonials">
+    <div class="lp-testimonials-inner">
+      <div class="lp-section-header lp-reveal">
+        <span class="lp-eyebrow">Client Experiences</span>
+        <h2 class="lp-section-title">WHAT THEY<br/>SAY</h2>
+      </div>
+      <div class="lp-testimonials-grid">
+        <blockquote class="lp-testimonial lp-reveal">
+          <div>
+            <div class="lp-testimonial-stars" aria-label="5 stars"><div class="lp-star"></div><div class="lp-star"></div><div class="lp-star"></div><div class="lp-star"></div><div class="lp-star"></div></div>
+            <p class="lp-testimonial-quote">"Edgar did a full sleeve portrait of my grandfather. Every session was professional, the detail is unreal. Three years later it still looks fresh. Worth every dollar."</p>
+          </div>
+          <footer class="lp-testimonial-author">
+            <div class="lp-testimonial-name">Marcus R.</div>
+            <div class="lp-testimonial-detail">Full Sleeve · Black &amp; Grey · Las Vegas, NV</div>
+          </footer>
+        </blockquote>
+        <blockquote class="lp-testimonial lp-reveal lp-reveal-delay-1">
+          <div>
+            <div class="lp-testimonial-stars" aria-label="5 stars"><div class="lp-star"></div><div class="lp-star"></div><div class="lp-star"></div><div class="lp-star"></div><div class="lp-star"></div></div>
+            <p class="lp-testimonial-quote">"Used the quote tool before booking. Got an exact estimate, knew exactly what I was walking into. No surprises. The AI quote matched what I actually paid."</p>
+          </div>
+          <footer class="lp-testimonial-author">
+            <div class="lp-testimonial-name">Sofia M.</div>
+            <div class="lp-testimonial-detail">Forearm Piece · Hyperrealism · Phoenix, AZ</div>
+          </footer>
+        </blockquote>
+        <blockquote class="lp-testimonial lp-reveal lp-reveal-delay-2">
+          <div>
+            <div class="lp-testimonial-stars" aria-label="5 stars"><div class="lp-star"></div><div class="lp-star"></div><div class="lp-star"></div><div class="lp-star"></div><div class="lp-star"></div></div>
+            <p class="lp-testimonial-quote">"Flew in from Chicago for a chest piece. Two sessions. Edgar's pre-booking process was on point — no surprises, no wasted time. Exactly what was quoted."</p>
+          </div>
+          <footer class="lp-testimonial-author">
+            <div class="lp-testimonial-name">David K.</div>
+            <div class="lp-testimonial-detail">Chest Piece · Dark Portrait · Chicago, IL</div>
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ SECTION 7: EDGAR BIO ════════ -->
+  <section class="lp-bio">
+    <div class="lp-bio-inner">
+      <div class="lp-bio-visual lp-reveal">
+        <div class="lp-bio-badge">Las Vegas, NV</div>
+        <div class="lp-bio-label">Edgar Luna · Artist Photo</div>
+        <div class="lp-bio-visual-ph" aria-hidden="true">
+          <svg viewBox="0 0 64 64" stroke="var(--cement)" fill="none" stroke-width="0.5"><circle cx="32" cy="22" r="12"/><path d="M8 58c0-13.255 10.745-24 24-24s24 10.745 24 24"/></svg>
+        </div>
+      </div>
+      <div class="lp-bio-content lp-reveal lp-reveal-delay-1">
+        <span class="lp-eyebrow">The Artist</span>
+        <h2 class="lp-bio-title">EDGAR<br/><em>LUNA</em></h2>
+        <p class="lp-bio-text">US Army OEF Veteran. Entrepreneur. One of Las Vegas's most respected tattoo artists. Edgar built his reputation on one principle: every client deserves a piece that no one else in the world has.</p>
+        <p class="lp-bio-text">After a decade mastering dark portraiture and hyperrealism, Edgar is selective by design. He doesn't fill a schedule with volume — he fills it with work he's proud to put his name on.</p>
+        <div class="lp-bio-tags">
+          <span class="lp-bio-tag">OEF Veteran</span>
+          <span class="lp-bio-tag">Entrepreneur</span>
+          <span class="lp-bio-tag">Las Vegas</span>
+          <span class="lp-bio-tag">By Appointment Only</span>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap">
+          <a class="lp-btn-ghost" href="https://instagram.com/officialedgarluna" target="_blank" rel="noopener">@officialedgarluna</a>
+          <a class="lp-btn-primary" href="#get-quote" onclick="event.preventDefault();document.getElementById('get-quote').scrollIntoView({behavior:'smooth'});setTimeout(function(){document.getElementById('main-input').focus()},700)">Get a Quote</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ SECTION 8: AI QUOTE CTA ════════ -->
+  <section class="lp-quote" id="get-quote">
+    <div class="lp-quote-inner">
+      <span class="lp-quote-eyebrow lp-reveal">AI-Powered Quote System</span>
+      <h2 class="lp-quote-title lp-reveal lp-reveal-delay-1">WHAT DO YOU WANT<br/>TO CARRY FOREVER?</h2>
+      <p class="lp-quote-sub lp-reveal lp-reveal-delay-2">Describe your vision. Get an honest estimate in seconds. No meetings, no waiting — just a real price range so you know exactly what you're committing to before you commit.</p>
+
+      <div class="input-card lp-reveal lp-reveal-delay-3" style="text-align:left;max-width:100%">
+        <div class="card-question">Describe your tattoo idea</div>
+        <textarea
+          class="main-textarea"
+          id="main-input"
+          placeholder="e.g. Realistic portrait of my grandfather, forearm, black and grey, about 8 inches tall..."
+          rows="3"
+          onkeydown="handleEnter(event)"
+        ></textarea>
+        <div class="card-actions">
+          <div style="display:flex;align-items:center;gap:0.75rem;flex:1;min-width:0">
+            <label for="file-in" class="attach-btn">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="1.5" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+              Add reference
+            </label>
+            <input type="file" id="file-in" accept="image/*" onchange="onFile(event)"/>
+            <div class="img-pill" id="img-pill">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span class="img-pill-name" id="img-pill-name"></span>
+              <button class="rm-img" onclick="clearImg()" type="button" aria-label="Remove image">✕</button>
+            </div>
+          </div>
+          <button class="submit-btn" id="submit-btn" onclick="submitQuery()" disabled>
+            Get Estimate
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+      <span class="lp-quote-disclaimer">$200/hr · $150 minimum · $100 deposit to hold your appointment</span>
+    </div>
+  </section>
 
 </div>
 
@@ -1104,6 +1928,17 @@ function submitBooking(){
   document.getElementById('bk-form').style.display='none';
   document.getElementById('bk-success').style.display='block';
 }
+
+// Scroll reveal
+const _revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      _revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.lp-reveal').forEach(el => _revealObs.observe(el));
 </script>
 </body>
 </html>

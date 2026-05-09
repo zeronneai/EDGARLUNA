@@ -23,25 +23,38 @@
 }
 html,body {
   height:100%;
-  background:var(--black);
+  background:#000;
   color:var(--white);
   font-family:'Barlow Condensed',sans-serif;
   font-weight:400;
   overflow-x:hidden;
 }
 
+/* ── Global beam canvas (fixed behind everything) ── */
+#global-beam-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* ── PAGE SECTIONS ── */
 #page-result{min-height:100vh}
 
-/* ── 3D ROOM ── */
-#page-home {
+#page-home, #page-result {
   position: relative;
+  z-index: 1;
+}
+
+#page-home {
   display: block;
-  background: var(--black);
+  background: transparent;
   overflow-x: hidden;
 }
 
-/* Hero wraps the 3D room scene */
+/* Hero — transparent so global beam canvas shows fully */
 .lp-hero {
   position: relative;
   min-height: 100vh;
@@ -50,7 +63,7 @@ html,body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #050505;
+  background: transparent;
 }
 
 .room-vignette {
@@ -368,14 +381,6 @@ html,body {
   flex-wrap: wrap;
   justify-content: center;
 }
-/* Shader canvas hero background */
-#hero-shader-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
 
 .lp-btn-primary {
   font-family: 'Barlow Condensed', sans-serif;
@@ -497,7 +502,7 @@ html,body {
   display: flex;
   align-items: stretch;
   justify-content: center;
-  background: var(--black-2);
+  background: rgba(8,8,8,0.82);
   border-top: 1px solid var(--black-4);
   border-bottom: 1px solid var(--black-4);
 }
@@ -562,7 +567,7 @@ html,body {
 /* ── Work / Gallery ── */
 .lp-work {
   padding: 8rem 3rem;
-  background: var(--black);
+  background: rgba(8,8,8,0.90);
 }
 .lp-work-inner { max-width: 1400px; margin: 0 auto; }
 .gallery-grid {
@@ -622,7 +627,7 @@ html,body {
 .lp-manifesto {
   position: relative;
   padding: 10rem 3rem;
-  background: #020202;
+  background: rgba(4,4,4,0.88);
   overflow: hidden;
 }
 .lp-manifesto::before {
@@ -704,9 +709,9 @@ html,body {
 /* ── How It Works ── */
 .lp-process {
   padding: 8rem 3rem;
-  background: var(--black-2);
-  border-top: 1px solid var(--black-4);
-  border-bottom: 1px solid var(--black-4);
+  background: rgba(14,14,14,0.87);
+  border-top: 1px solid rgba(42,42,42,0.6);
+  border-bottom: 1px solid rgba(42,42,42,0.6);
 }
 .lp-process-inner { max-width: 1100px; margin: 0 auto; }
 .lp-steps {
@@ -780,7 +785,7 @@ html,body {
 /* ── Testimonials ── */
 .lp-testimonials {
   padding: 8rem 3rem;
-  background: var(--black);
+  background: rgba(8,8,8,0.88);
 }
 .lp-testimonials-inner { max-width: 1100px; margin: 0 auto; }
 .lp-testimonials-grid {
@@ -842,8 +847,8 @@ html,body {
 /* ── Edgar Bio ── */
 .lp-bio {
   padding: 8rem 3rem;
-  background: var(--black-2);
-  border-top: 1px solid var(--black-4);
+  background: rgba(14,14,14,0.87);
+  border-top: 1px solid rgba(42,42,42,0.6);
 }
 .lp-bio-inner {
   max-width: 1100px;
@@ -944,7 +949,7 @@ html,body {
 /* ── AI Quote CTA section ── */
 .lp-quote {
   padding: 10rem 3rem;
-  background: #020202;
+  background: rgba(4,4,4,0.84);
   position: relative;
   overflow: hidden;
 }
@@ -1025,7 +1030,7 @@ html,body {
 
 
 /* CHAT PAGE */
-#page-result{display:none;height:100vh;flex-direction:column}
+#page-result{display:none;height:100vh;flex-direction:column;background:rgba(6,6,6,0.94)}
 #page-result.on{display:flex}
 
 .chat-topbar{
@@ -1270,6 +1275,7 @@ html,body {
 </head>
 <body>
 
+<canvas id="global-beam-canvas" aria-hidden="true"></canvas>
 <div class="page-transition" id="pt"></div>
 
 <!-- ═══════════════════════════ HOME ═══════════════════════════ -->
@@ -1281,9 +1287,8 @@ html,body {
     <a class="nav-ig" href="https://instagram.com/officialedgarluna" target="_blank" rel="noopener">@officialedgarluna</a>
   </nav>
 
-  <!-- ════════ SECTION 1: HERO — SHADER ════════ -->
+  <!-- ════════ SECTION 1: HERO ════════ -->
   <section class="lp-hero" aria-label="Hero">
-    <canvas id="hero-shader-canvas" aria-hidden="true"></canvas>
     <div class="room-vignette" aria-hidden="true"></div>
 
     <div class="lp-hero-content">
@@ -1801,68 +1806,171 @@ function submitBooking(){
   document.getElementById('bk-success').style.display='block';
 }
 
-// ── Hero shader animation ──
-(function initHeroShader() {
-  const canvas = document.getElementById('hero-shader-canvas');
-  if (!canvas || typeof THREE === 'undefined') return;
+// ── Ethereal Beams — global fixed background ──
+(function initEtherealBeams() {
+  if (typeof THREE === 'undefined') return;
+  const canvas = document.getElementById('global-beam-canvas');
+  if (!canvas) return;
 
-  const vertexShader = `void main(){gl_Position=vec4(position,1.0);}`;
-  const fragmentShader = `
-    #define TWO_PI 6.2831853072
-    precision highp float;
-    uniform vec2 resolution;
-    uniform float time;
-    void main(void){
-      vec2 uv=(gl_FragCoord.xy*2.0-resolution.xy)/min(resolution.x,resolution.y);
-      float t=time*0.05;
-      float lineWidth=0.002;
-      vec3 color=vec3(0.0);
-      for(int j=0;j<3;j++){
-        for(int i=0;i<5;i++){
-          color[j]+=lineWidth*float(i*i)/abs(fract(t-0.01*float(j)+float(i)*0.01)*5.0-length(uv)+mod(uv.x+uv.y,0.2));
+  // ── 3D Perlin noise GLSL ──
+  const noiseGLSL = `
+float _rnd(in vec2 st){return fract(sin(dot(st.xy,vec2(12.9898,78.233)))*43758.5453123);}
+float _noise2(in vec2 st){
+  vec2 i=floor(st);vec2 f=fract(st);
+  float a=_rnd(i),b=_rnd(i+vec2(1.,0.)),c=_rnd(i+vec2(0.,1.)),d=_rnd(i+vec2(1.,1.));
+  vec2 u=f*f*(3.-2.*f);
+  return mix(a,b,u.x)+(c-a)*u.y*(1.-u.x)+(d-b)*u.x*u.y;
+}
+vec4 _perm(vec4 x){return mod(((x*34.)+1.)*x,289.);}
+vec4 _tiSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+vec3 _fade(vec3 t){return t*t*t*(t*(t*6.-15.)+10.);}
+float cnoise(vec3 P){
+  vec3 Pi0=floor(P),Pi1=Pi0+vec3(1.);
+  Pi0=mod(Pi0,289.);Pi1=mod(Pi1,289.);
+  vec3 Pf0=fract(P),Pf1=Pf0-vec3(1.);
+  vec4 ix=vec4(Pi0.x,Pi1.x,Pi0.x,Pi1.x),iy=vec4(Pi0.yy,Pi1.yy),iz0=Pi0.zzzz,iz1=Pi1.zzzz;
+  vec4 ixy=_perm(_perm(ix)+iy),ixy0=_perm(ixy+iz0),ixy1=_perm(ixy+iz1);
+  vec4 gx0=ixy0/7.,gy0=fract(floor(gx0)/7.)-.5;gx0=fract(gx0);
+  vec4 gz0=vec4(.5)-abs(gx0)-abs(gy0),sz0=step(gz0,vec4(0.));
+  gx0-=sz0*(step(0.,gx0)-.5);gy0-=sz0*(step(0.,gy0)-.5);
+  vec4 gx1=ixy1/7.,gy1=fract(floor(gx1)/7.)-.5;gx1=fract(gx1);
+  vec4 gz1=vec4(.5)-abs(gx1)-abs(gy1),sz1=step(gz1,vec4(0.));
+  gx1-=sz1*(step(0.,gx1)-.5);gy1-=sz1*(step(0.,gy1)-.5);
+  vec3 g000=vec3(gx0.x,gy0.x,gz0.x),g100=vec3(gx0.y,gy0.y,gz0.y);
+  vec3 g010=vec3(gx0.z,gy0.z,gz0.z),g110=vec3(gx0.w,gy0.w,gz0.w);
+  vec3 g001=vec3(gx1.x,gy1.x,gz1.x),g101=vec3(gx1.y,gy1.y,gz1.y);
+  vec3 g011=vec3(gx1.z,gy1.z,gz1.z),g111=vec3(gx1.w,gy1.w,gz1.w);
+  vec4 norm0=_tiSqrt(vec4(dot(g000,g000),dot(g010,g010),dot(g100,g100),dot(g110,g110)));
+  g000*=norm0.x;g010*=norm0.y;g100*=norm0.z;g110*=norm0.w;
+  vec4 norm1=_tiSqrt(vec4(dot(g001,g001),dot(g011,g011),dot(g101,g101),dot(g111,g111)));
+  g001*=norm1.x;g011*=norm1.y;g101*=norm1.z;g111*=norm1.w;
+  float n000=dot(g000,Pf0),n100=dot(g100,vec3(Pf1.x,Pf0.yz));
+  float n010=dot(g010,vec3(Pf0.x,Pf1.y,Pf0.z)),n110=dot(g110,vec3(Pf1.xy,Pf0.z));
+  float n001=dot(g001,vec3(Pf0.xy,Pf1.z)),n101=dot(g101,vec3(Pf1.x,Pf0.y,Pf1.z));
+  float n011=dot(g011,vec3(Pf0.x,Pf1.yz)),n111=dot(g111,Pf1);
+  vec3 fxyz=_fade(Pf0);
+  vec4 nz=mix(vec4(n000,n100,n010,n110),vec4(n001,n101,n011,n111),fxyz.z);
+  vec2 nyz=mix(nz.xy,nz.zw,fxyz.y);
+  return 2.2*mix(nyz.x,nyz.y,fxyz.x);
+}`;
+
+  // ── Stacked planes geometry ──
+  function buildGeometry(n, width, height, heightSegs) {
+    const geo = new THREE.BufferGeometry();
+    const nv = n * (heightSegs + 1) * 2, nf = n * heightSegs * 2;
+    const pos = new Float32Array(nv * 3), idx = new Uint32Array(nf * 3), uvs = new Float32Array(nv * 2);
+    let vi = 0, ii = 0, ui = 0;
+    const totalW = n * width, xBase = -totalW / 2;
+    for (let i = 0; i < n; i++) {
+      const xOff = xBase + i * width;
+      const uvXO = Math.random() * 300, uvYO = Math.random() * 300;
+      for (let j = 0; j <= heightSegs; j++) {
+        const y = height * (j / heightSegs - 0.5);
+        pos.set([xOff, y, 0, xOff + width, y, 0], vi * 3);
+        uvs.set([uvXO, j / heightSegs + uvYO, uvXO + 1, j / heightSegs + uvYO], ui);
+        if (j < heightSegs) {
+          const a = vi, b = vi+1, c = vi+2, d = vi+3;
+          idx.set([a,b,c,c,b,d], ii); ii += 6;
         }
+        vi += 2; ui += 4;
       }
-      gl_FragColor=vec4(color[0],color[1],color[2],1.0);
     }
-  `;
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+    geo.setIndex(new THREE.BufferAttribute(idx, 1));
+    geo.computeVertexNormals();
+    return geo;
+  }
 
-  const camera = new THREE.Camera();
-  camera.position.z = 1;
-  const scene = new THREE.Scene();
-  const geometry = new THREE.PlaneGeometry(2, 2);
-  const uniforms = {
-    time: { value: 1.0 },
-    resolution: { value: new THREE.Vector2() }
-  };
-  const material = new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader });
-  scene.add(new THREE.Mesh(geometry, material));
+  // ── Beam material (extends THREE physical shader) ──
+  const phys = THREE.ShaderLib.physical;
+  const uniforms = THREE.UniformsUtils.clone(phys.uniforms);
+  Object.assign(uniforms, {
+    diffuse:         { value: new THREE.Color(0x000000) },
+    roughness:       { value: 0.3 },
+    metalness:       { value: 0.3 },
+    envMapIntensity: { value: 10 },
+    time:            { value: 0 },
+    uSpeed:          { value: 2.5 },
+    uNoiseIntensity: { value: 2.0 },
+    uScale:          { value: 0.15 },
+  });
 
+  const shaderHeader = `
+    varying vec3 vEye; varying float vNoise; varying vec2 vUv; varying vec3 vPos;
+    uniform float time; uniform float uSpeed; uniform float uNoiseIntensity; uniform float uScale;
+    ${noiseGLSL}`;
+
+  const vertHeader = `
+    float _getPos(vec3 p){
+      return cnoise(vec3(p.x*0.,p.y-uv.y,p.z+time*uSpeed*3.)*uScale);
+    }
+    vec3 _curPos(vec3 p){vec3 n=p;n.z+=_getPos(p);return n;}
+    vec3 _getNorm(vec3 p){
+      vec3 c=_curPos(p),nx=_curPos(p+vec3(.01,0.,0.)),nz=_curPos(p+vec3(0.,-.01,0.));
+      return normalize(cross(normalize(nz-c),normalize(nx-c)));
+    }`;
+
+  let vert = `${shaderHeader}\n${vertHeader}\n${phys.vertexShader}`
+    .replace('#include <begin_vertex>',       '#include <begin_vertex>\ntransformed.z+=_getPos(transformed.xyz);')
+    .replace('#include <beginnormal_vertex>',  '#include <beginnormal_vertex>\nobjectNormal=_getNorm(position.xyz);');
+
+  let frag = `${shaderHeader}\n${phys.fragmentShader}`
+    .replace('#include <dithering_fragment>',
+      '#include <dithering_fragment>\ngl_FragColor.rgb-=_noise2(gl_FragCoord.xy)/15.*uNoiseIntensity;');
+
+  // inject _noise2 alias into frag (noiseGLSL defines _noise2 via _rnd)
+  const beamMat = new THREE.ShaderMaterial({
+    defines: { ...(phys.defines || {}) },
+    uniforms,
+    vertexShader: vert,
+    fragmentShader: frag,
+    lights: true,
+    fog: true,
+    side: THREE.DoubleSide,
+  });
+
+  // ── Renderer ──
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.physicallyCorrectLights = true;
 
+  // ── Scene ──
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x000000);
+  scene.fog = new THREE.Fog(0x000000, 20, 80);
+
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+  camera.position.z = 20;
+
+  const geo = buildGeometry(15, 2.5, 18, 100);
+  const mesh = new THREE.Mesh(geo, beamMat);
+  mesh.rotation.z = 43 * Math.PI / 180;
+  scene.add(mesh);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+  dirLight.position.set(0, 3, 10);
+  scene.add(dirLight);
+  scene.add(new THREE.AmbientLight(0xffffff, 1));
+
+  // ── Resize ──
   function resize() {
-    const hero = canvas.parentElement;
-    const w = hero.clientWidth, h = hero.clientHeight;
+    const w = window.innerWidth, h = window.innerHeight;
     renderer.setSize(w, h);
-    uniforms.resolution.value.set(renderer.domElement.width, renderer.domElement.height);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
   }
   resize();
   window.addEventListener('resize', resize);
 
-  let rafId;
+  // ── Animation loop ──
+  const clock = new THREE.Clock();
   function animate() {
-    rafId = requestAnimationFrame(animate);
-    uniforms.time.value += 0.05;
+    requestAnimationFrame(animate);
+    beamMat.uniforms.time.value += 0.1 * clock.getDelta();
     renderer.render(scene, camera);
   }
   animate();
-
-  // Pause when hero is off-screen for performance
-  const heroEl = canvas.parentElement;
-  const perfObs = new IntersectionObserver(entries => {
-    entries[0].isIntersecting ? animate() : cancelAnimationFrame(rafId);
-  }, { threshold: 0 });
-  perfObs.observe(heroEl);
 })();
 
 // Scroll reveal

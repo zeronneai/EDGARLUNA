@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Edgar Luna</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,400;1,600&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#080808;color:#ede8e0;font-family:'Barlow',sans-serif;overflow-x:hidden}
+
+/* ── PAGE SECTIONS ── */
+#page-home,#page-result{min-height:100vh}
+
+/* ════════════════════════════════
+   HOME — SPLIT LAYOUT
+   ════════════════════════════════ */
+#page-home{display:grid;grid-template-rows:1fr auto;position:relative}
+
+/* subtle grid texture */
+#page-home::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(180,140,80,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(180,140,80,0.04) 1px,transparent 1px);
+  background-size:80px 80px;pointer-events:none;
+}
+
+.home-nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:2rem 3rem;
+}
+.home-nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.9) 0%,transparent 100%);pointer-events:none}
+.logo{position:relative;z-index:1;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;font-weight:400;letter-spacing:0.12em;color:#ede8e0}
+.logo em{font-style:normal;color:#c9a96e}
+.nav-ig{
+  position:relative;z-index:1;
+  font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.14em;
+  color:#7a7060;text-decoration:none;transition:color 0.3s;text-transform:uppercase;
+}
+.nav-ig:hover{color:#c9a96e}
+
+/* CENTER BLOCK */
+.home-center{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;padding:8rem 2rem 4rem;
+  position:relative;z-index:1;
+}
+
+.home-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4.5rem,10vw,9rem);
+  font-weight:400;
+  line-height:0.95;
+  letter-spacing:0.04em;
+  color:#ede8e0;
+  text-align:center;
+  margin-bottom:0.6rem;
+}
+.home-title em{font-style:normal;color:#c9a96e}
+
+.home-sub{
+  font-size:0.9rem;font-weight:500;
+  letter-spacing:0.2em;color:#7a7060;
+  text-align:center;margin-bottom:3.5rem;
+  text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;
+}
+
+/* INPUT CARD */
+.input-card{
+  width:100%;max-width:640px;
+  background:#111;
+  border:1px solid rgba(180,140,80,0.2);
+  padding:2.5rem;
+  position:relative;
+}
+
+.card-question{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.8rem;font-weight:400;letter-spacing:0.06em;
+  color:#ede8e0;
+  margin-bottom:1.5rem;
+  line-height:1.2;
+}
+
+.main-textarea{
+  width:100%;
+  background:transparent;
+  border:none;
+  border-bottom:1px solid rgba(180,140,80,0.25);
+  color:#ede8e0;
+  font-family:'Barlow',sans-serif;
+  font-size:1.05rem;font-weight:400;
+  line-height:1.7;
+  padding:0.75rem 0;
+  resize:none;
+  outline:none;
+  min-height:80px;
+  transition:border-color 0.3s;
+}
+.main-textarea:focus{border-color:rgba(180,140,80,0.6)}
+.main-textarea::placeholder{color:#3a3530}
+
+.card-actions{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:1.5rem;gap:1rem;
+}
+
+.attach-btn{
+  display:flex;align-items:center;gap:0.6rem;
+  background:none;border:1px solid rgba(180,140,80,0.18);
+  color:#7a7060;font-family:'Barlow Condensed',sans-serif;
+  font-size:0.85rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.65rem 1rem;cursor:pointer;transition:all 0.3s;
+  flex-shrink:0;
+}
+.attach-btn:hover{border-color:rgba(180,140,80,0.5);color:#c9a96e}
+.attach-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
+
+.img-pill{
+  display:none;align-items:center;gap:0.5rem;
+  font-size:0.72rem;color:#7a7060;
+  border:1px solid rgba(180,140,80,0.15);
+  padding:0.4rem 0.75rem;
+}
+.img-pill.on{display:flex}
+.img-pill-name{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rm-img{background:none;border:none;color:#7a7060;cursor:pointer;font-size:0.9rem;line-height:1;padding:0;transition:color 0.2s}
+.rm-img:hover{color:#c9a96e}
+
+.submit-btn{
+  display:flex;align-items:center;gap:0.75rem;
+  background:#c9a96e;border:none;
+  color:#080808;font-family:'Barlow Condensed',sans-serif;
+  font-size:0.95rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+  padding:0.75rem 1.6rem;cursor:pointer;transition:all 0.3s;
+  white-space:nowrap;flex-shrink:0;
+}
+.submit-btn:hover{background:#ede8e0}
+.submit-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.submit-btn:disabled{opacity:0.4;cursor:default}
+
+#file-in{display:none}
+
+/* ── GALLERY STRIP ── */
+#gallery{
+  position:relative;z-index:1;
+  padding:5rem 3rem;
+  border-top:1px solid rgba(180,140,80,0.1);
+}
+.gallery-label{
+  font-size:0.85rem;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;
+  color:#7a7060;margin-bottom:2rem;
+  font-family:'Barlow Condensed',sans-serif;
+  display:flex;align-items:center;gap:1rem;
+}
+.gallery-label::after{content:'';flex:1;height:1px;background:rgba(180,140,80,0.12)}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:3px;
+}
+.gal-item{
+  aspect-ratio:1;background:var(--c,#1a1a1a);
+  position:relative;overflow:hidden;cursor:pointer;
+}
+.gal-item::after{
+  content:'';position:absolute;inset:0;
+  background:rgba(8,8,8,0.4);transition:opacity 0.4s;
+}
+.gal-item:hover::after{opacity:0}
+.gal-placeholder{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+}
+.gal-placeholder svg{width:28px;height:28px;stroke:rgba(180,140,80,0.2);fill:none;stroke-width:1}
+
+
+/* ════════════════════════════════
+   RESULT PAGE
+   ════════════════════════════════ */
+#page-result{display:none}
+#page-result.on{display:block}
+
+.result-nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:2rem 3rem;background:rgba(8,8,8,0.96);
+  border-bottom:1px solid rgba(180,140,80,0.08);
+}
+.result-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;font-weight:400;letter-spacing:0.12em;color:#ede8e0}
+.result-logo em{font-style:normal;color:#c9a96e}
+.back-btn{
+  background:none;border:1px solid rgba(180,140,80,0.2);
+  color:#7a7060;font-family:'Barlow Condensed',sans-serif;
+  font-size:0.85rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;
+  padding:0.5rem 1rem;cursor:pointer;transition:all 0.3s;
+}
+.back-btn:hover{border-color:rgba(180,140,80,0.5);color:#c9a96e}
+
+.result-body{
+  max-width:740px;margin:0 auto;
+  padding:9rem 2rem 5rem;
+}
+
+/* USER QUERY RECAP */
+.query-recap{
+  margin-bottom:3rem;
+  padding-bottom:2rem;
+  border-bottom:1px solid rgba(180,140,80,0.1);
+}
+.query-label{
+  font-size:0.82rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:#7a7060;margin-bottom:0.75rem;
+  font-family:'Barlow Condensed',sans-serif;font-weight:500;
+}
+.query-text{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2rem,4vw,3.5rem);font-weight:400;line-height:1.1;
+  letter-spacing:0.04em;color:#ede8e0;
+}
+.query-img-badge{
+  display:none;align-items:center;gap:0.5rem;
+  margin-top:0.75rem;
+  font-size:0.72rem;color:#7a7060;
+}
+.query-img-badge.on{display:flex}
+.query-img-badge svg{width:14px;height:14px;stroke:#c9a96e;fill:none;stroke-width:1.5}
+
+/* AI RESPONSE */
+.ai-response{
+  opacity:0;
+  animation:fadeUp 0.7s 0.1s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.ai-thinking{
+  display:flex;gap:6px;align-items:center;padding:1rem 0;
+}
+.t-dot{width:6px;height:6px;border-radius:50%;background:#5a4a30;animation:tdot 1.3s ease-in-out infinite}
+.t-dot:nth-child(2){animation-delay:.2s}.t-dot:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+
+.ai-text{
+  font-family:'Barlow',sans-serif;font-size:1.05rem;font-weight:400;
+  line-height:1.85;color:#c8c0b4;
+}
+.ai-text strong{color:#ede8e0;font-weight:600}
+
+/* ESTIMATE BLOCK */
+.estimate-block{
+  margin:2.5rem 0;
+  background:#111;
+  border:1px solid rgba(180,140,80,0.2);
+  padding:2rem 2.5rem;
+  opacity:0;transform:translateY(10px);
+  transition:opacity 0.6s ease,transform 0.6s ease;
+}
+.estimate-block.on{opacity:1;transform:translateY(0)}
+.est-label{
+  font-size:0.82rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:#7a7060;margin-bottom:0.75rem;
+  font-family:'Barlow Condensed',sans-serif;font-weight:500;
+}
+.est-figure{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,7vw,6rem);
+  font-weight:400;line-height:1;letter-spacing:0.04em;
+  color:#ede8e0;
+}
+.est-sub{
+  font-size:0.88rem;font-weight:400;
+  color:#7a7060;margin-top:0.5rem;letter-spacing:0.04em;
+  font-family:'Barlow',sans-serif;
+}
+.est-details{
+  display:flex;gap:2.5rem;margin-top:1.5rem;
+  padding-top:1.5rem;
+  border-top:1px solid rgba(180,140,80,0.1);
+  flex-wrap:wrap;
+}
+.est-detail{display:flex;flex-direction:column;gap:0.3rem}
+.est-detail-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:#5a5048;font-family:'Barlow Condensed',sans-serif;font-weight:500}
+.est-detail-val{font-size:1rem;font-weight:600;color:#ede8e0;font-family:'Barlow',sans-serif}
+
+/* SPECIALTIES */
+.spec-row{
+  display:flex;gap:0.5rem;flex-wrap:wrap;
+  margin:2rem 0;
+}
+.spec-chip{
+  font-size:0.82rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  font-family:'Barlow Condensed',sans-serif;
+  border:1px solid rgba(180,140,80,0.2);
+  color:#9a9080;padding:0.4rem 0.9rem;
+}
+
+/* ACTIONS */
+.actions-block{
+  margin-top:3rem;
+  padding-top:2.5rem;
+  border-top:1px solid rgba(180,140,80,0.1);
+  opacity:0;transform:translateY(10px);
+  transition:opacity 0.6s ease,transform 0.6s ease;
+}
+.actions-block.on{opacity:1;transform:translateY(0)}
+.actions-heading{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.5rem,5vw,4rem);font-weight:400;letter-spacing:0.05em;
+  color:#ede8e0;margin-bottom:1.75rem;
+  line-height:1;
+}
+.actions-heading em{font-style:normal;color:#c9a96e}
+
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.action-card{
+  background:#111;border:1px solid rgba(180,140,80,0.15);
+  padding:1.75rem;cursor:pointer;
+  text-decoration:none;
+  transition:border-color 0.3s,background 0.3s;
+  display:flex;flex-direction:column;gap:0.5rem;
+}
+.action-card:hover{border-color:rgba(180,140,80,0.4);background:#161610}
+.action-card-icon{font-size:1.2rem;margin-bottom:0.2rem}
+.action-card-title{font-size:1.05rem;font-weight:600;color:#ede8e0;font-family:'Barlow',sans-serif}
+.action-card-desc{font-size:0.82rem;font-weight:400;color:#7a7060;line-height:1.6;font-family:'Barlow',sans-serif}
+.action-card.primary{
+  background:rgba(201,169,110,0.08);
+  border-color:rgba(180,140,80,0.35);
+}
+.action-card.primary .action-card-title{color:#c9a96e}
+
+/* ── TRANSITIONS ── */
+.page-transition{
+  position:fixed;inset:0;background:#080808;z-index:500;
+  pointer-events:none;opacity:0;transition:opacity 0.3s ease;
+}
+.page-transition.on{opacity:1;pointer-events:all}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .home-nav,.result-nav{padding:1.5rem 1.5rem}
+  .home-center{padding:7rem 1.5rem 3rem}
+  #gallery{padding:4rem 1.5rem}
+  .result-body{padding:8rem 1.5rem 4rem}
+  .action-grid{grid-template-columns:1fr}
+  .card-actions{flex-wrap:wrap}
+  .gallery-grid{grid-template-columns:repeat(3,1fr)}
+  .home-title{font-size:2.4rem}
+  .est-details{gap:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="page-transition" id="pt"></div>
+
+<!-- ═══════════════════════════ HOME ═══════════════════════════ -->
+<div id="page-home">
+
+  <nav class="home-nav">
+    <div class="logo">Edgar <em>Luna</em></div>
+    <a class="nav-ig" href="https://instagram.com/officialedgarluna" target="_blank">@officialedgarluna</a>
+  </nav>
+
+  <div class="home-center">
+    <h1 class="home-title">What do you want<br/>to <em>carry forever</em>?</h1>
+    <p class="home-sub">Las Vegas · Tattoo Artist</p>
+
+    <div class="input-card">
+      <div class="card-question">Describe your tattoo idea</div>
+
+      <textarea
+        class="main-textarea"
+        id="main-input"
+        placeholder="e.g. Realistic angel, forearm, about 6 inches tall..."
+        rows="3"
+        onkeydown="handleEnter(event)"
+      ></textarea>
+
+      <div class="card-actions">
+        <div style="display:flex;align-items:center;gap:0.75rem;flex:1;min-width:0">
+          <label for="file-in" class="attach-btn">
+            <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+            Add reference
+          </label>
+          <input type="file" id="file-in" accept="image/*" onchange="onFile(event)"/>
+          <div class="img-pill" id="img-pill">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="img-pill-name" id="img-pill-name"></span>
+            <button class="rm-img" onclick="clearImg()" type="button">✕</button>
+          </div>
+        </div>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuery()" disabled>
+          Get Estimate
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div id="gallery">
+    <div class="gallery-label">Selected Works</div>
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════ RESULT ═══════════════════════════ -->
+<div id="page-result">
+
+  <nav class="result-nav">
+    <div class="result-logo">Edgar <em>Luna</em></div>
+    <button class="back-btn" onclick="goHome()">← Start over</button>
+  </nav>
+
+  <div class="result-body">
+
+    <!-- Query recap -->
+    <div class="query-recap">
+      <div class="query-label">Your idea</div>
+      <div class="query-text" id="recap-text"></div>
+      <div class="query-img-badge" id="recap-img">
+        <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+        <span id="recap-img-name"></span>
+      </div>
+    </div>
+
+    <!-- AI response -->
+    <div class="ai-response" id="ai-response">
+      <div class="ai-thinking" id="ai-thinking">
+        <div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>
+      </div>
+      <div id="ai-content" style="display:none">
+        <div class="ai-text" id="ai-text"></div>
+        <div class="estimate-block" id="est-block">
+          <div class="est-label">Estimated Range</div>
+          <div class="est-figure" id="est-figure"></div>
+          <div class="est-sub" id="est-sub"></div>
+          <div class="est-details" id="est-details"></div>
+        </div>
+        <div class="spec-row" id="spec-row"></div>
+        <div class="actions-block" id="actions-block">
+          <div class="actions-heading">Ready to <em>book</em>?</div>
+          <div class="action-grid">
+            <a class="action-card primary" href="https://instagram.com/officialedgarluna" target="_blank">
+              <div class="action-card-icon">📸</div>
+              <div class="action-card-title">DM on Instagram</div>
+              <div class="action-card-desc">Send your idea directly to Edgar @officialedgarluna — fastest way to lock in a date</div>
+            </a>
+            <div class="action-card" onclick="showContact()">
+              <div class="action-card-icon">📅</div>
+              <div class="action-card-title">Request Appointment</div>
+              <div class="action-card-desc">Fill out a booking request and Edgar will follow up within 24–48 hrs</div>
+            </div>
+            <a class="action-card" href="tel:+17020000000">
+              <div class="action-card-icon">📞</div>
+              <div class="action-card-title">Call the Studio</div>
+              <div class="action-card-desc">Las Vegas · By appointment only</div>
+            </a>
+            <a class="action-card" href="https://instagram.com/lunatattoodstudio" target="_blank">
+              <div class="action-card-icon">🏠</div>
+              <div class="action-card-title">Luna Tattoo Studio</div>
+              <div class="action-card-desc">Follow the studio for availability and flash drops</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BOOKING MODAL (simple overlay) -->
+<div id="booking-modal" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(8,8,8,0.95);overflow-y:auto">
+  <div style="max-width:500px;margin:0 auto;padding:5rem 2rem">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3rem">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.08em;color:#ede8e0">Request Appointment</span>
+      <button onclick="document.getElementById('booking-modal').style.display='none'" style="background:none;border:none;color:#7a7060;font-size:1.2rem;cursor:pointer;transition:color 0.2s" onmouseover="this.style.color='#c9a96e'" onmouseout="this.style.color='#7a7060'">✕</button>
+    </div>
+    <div id="bk-form">
+      <div style="margin-bottom:1.5rem">
+        <label style="display:block;font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:#7a7060;margin-bottom:0.5rem">Name</label>
+        <input id="bk-name" type="text" placeholder="Your name" style="width:100%;background:#111;border:1px solid rgba(180,140,80,0.15);color:#ede8e0;font-family:'Barlow',sans-serif;font-size:0.9rem;font-weight:400;padding:0.8rem 1rem;outline:none;transition:border-color 0.3s" onfocus="this.style.borderColor='rgba(180,140,80,0.45)'" onblur="this.style.borderColor='rgba(180,140,80,0.15)'"/>
+      </div>
+      <div style="margin-bottom:1.5rem">
+        <label style="display:block;font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:#7a7060;margin-bottom:0.5rem">Email</label>
+        <input id="bk-email" type="email" placeholder="you@example.com" style="width:100%;background:#111;border:1px solid rgba(180,140,80,0.15);color:#ede8e0;font-family:'Barlow',sans-serif;font-size:0.9rem;font-weight:400;padding:0.8rem 1rem;outline:none;transition:border-color 0.3s" onfocus="this.style.borderColor='rgba(180,140,80,0.45)'" onblur="this.style.borderColor='rgba(180,140,80,0.15)'"/>
+      </div>
+      <div style="margin-bottom:1.5rem">
+        <label style="display:block;font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:#7a7060;margin-bottom:0.5rem">Phone (optional)</label>
+        <input id="bk-phone" type="tel" placeholder="+1 (702) 000-0000" style="width:100%;background:#111;border:1px solid rgba(180,140,80,0.15);color:#ede8e0;font-family:'Barlow',sans-serif;font-size:0.9rem;font-weight:400;padding:0.8rem 1rem;outline:none;transition:border-color 0.3s" onfocus="this.style.borderColor='rgba(180,140,80,0.45)'" onblur="this.style.borderColor='rgba(180,140,80,0.15)'"/>
+      </div>
+      <div style="margin-bottom:2rem">
+        <label style="display:block;font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:#7a7060;margin-bottom:0.5rem">Preferred Date(s)</label>
+        <input id="bk-date" type="text" placeholder="e.g. Any weekend in June" style="width:100%;background:#111;border:1px solid rgba(180,140,80,0.15);color:#ede8e0;font-family:'Barlow',sans-serif;font-size:0.9rem;font-weight:400;padding:0.8rem 1rem;outline:none;transition:border-color 0.3s" onfocus="this.style.borderColor='rgba(180,140,80,0.45)'" onblur="this.style.borderColor='rgba(180,140,80,0.15)'"/>
+      </div>
+      <button onclick="submitBooking()" style="width:100%;background:#c9a96e;border:none;color:#080808;font-family:'Barlow',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;padding:1rem;cursor:pointer;transition:all 0.3s" onmouseover="this.style.background='#ede8e0'" onmouseout="this.style.background='#c9a96e'">Send Request →</button>
+    </div>
+    <div id="bk-success" style="display:none;text-align:center;padding:3rem 0">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:0.08em;color:#ede8e0;margin-bottom:1rem">Request sent.</div>
+      <p style="font-size:0.82rem;color:#7a7060;line-height:2">Edgar will reach out within 24–48 hrs.<br/>Keep an eye on your email.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── INPUT STATE ───────────────────────────────────────
+let imgFile=null,imgB64=null;
+const mainInput=document.getElementById('main-input');
+const submitBtn=document.getElementById('submit-btn');
+
+mainInput.addEventListener('input',()=>{
+  submitBtn.disabled=mainInput.value.trim().length<5;
+  autoH(mainInput);
+});
+
+function autoH(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,200)+'px'}
+function handleEnter(e){if(e.key==='Enter'&&!e.shiftKey&&mainInput.value.trim().length>=5){e.preventDefault();submitQuery()}}
+
+function onFile(e){
+  const f=e.target.files[0];if(!f)return;imgFile=f;
+  const r=new FileReader();
+  r.onload=ev=>{imgB64=ev.target.result.split(',')[1];document.getElementById('img-pill-name').textContent=f.name;document.getElementById('img-pill').classList.add('on');};
+  r.readAsDataURL(f);
+}
+function clearImg(){imgFile=null;imgB64=null;document.getElementById('img-pill').classList.remove('on');document.getElementById('file-in').value='';}
+
+// ── GALLERY (placeholder tiles) ───────────────────────
+const GALLERY_COLORS=['#1a1612','#181510','#141210','#1c1814','#201c16','#161412'];
+const gg=document.getElementById('gallery-grid');
+for(let i=0;i<12;i++){
+  const d=document.createElement('div');d.className='gal-item';
+  d.style.setProperty('--c',GALLERY_COLORS[i%GALLERY_COLORS.length]);
+  d.innerHTML=`<div class="gal-placeholder"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`;
+  gg.appendChild(d);
+}
+
+// ── PAGE TRANSITION ───────────────────────────────────
+function transitionTo(fn){
+  const pt=document.getElementById('pt');
+  pt.classList.add('on');
+  setTimeout(()=>{fn();pt.classList.remove('on');},280);
+}
+
+// ── SUBMIT ────────────────────────────────────────────
+async function submitQuery(){
+  const txt=mainInput.value.trim();
+  if(txt.length<5)return;
+  transitionTo(()=>{
+    document.getElementById('page-home').style.display='none';
+    document.getElementById('page-result').classList.add('on');
+    document.getElementById('recap-text').textContent='"'+txt+'"';
+    if(imgFile){
+      document.getElementById('recap-img').classList.add('on');
+      document.getElementById('recap-img-name').textContent=imgFile.name;
+    }
+    window.scrollTo({top:0,behavior:'instant'});
+  });
+  await runAI(txt);
+}
+
+async function runAI(userText){
+  const thinking=document.getElementById('ai-thinking');
+  const content=document.getElementById('ai-content');
+  thinking.style.display='flex';
+  content.style.display='none';
+
+  const SYSTEM=`You are Luna, the booking assistant for Edgar Luna — renowned tattoo artist in Las Vegas. Specialties: hyperrealism, dark portraiture, geometric blackwork, black & grey realism.
+
+EDGAR'S PRICING:
+- $200/hr · $150 minimum
+- Small (2–4 hrs, palm-sized): $400–$800
+- Medium (forearm, 5–8 hrs): $1,000–$1,600
+- Large (half sleeve, 10–20 hrs): $2,000–$4,000
+- Full sleeve (25–40 hrs): $5,000–$8,000
+- Portrait/face (4–8 hrs): $800–$1,600
+- Black & grey: ~10% less
+
+RESPONSE FORMAT — respond ONLY with valid JSON, no markdown, no extra text:
+{
+  "intro": "1–2 sentences reacting to their specific idea — warm, confident, no filler",
+  "estimate_low": "$X,XXX",
+  "estimate_high": "$X,XXX",
+  "estimate_note": "one line on why (complexity, size, session count)",
+  "time_estimate": "e.g. 4–6 hours / 1–2 sessions",
+  "specialties": ["up to 3 relevant style tags for their piece"],
+  "closing": "1 sentence inviting them to book — direct, no fluff"
+}`;
+
+  const content_msgs=[];
+  if(imgB64&&imgFile) content_msgs.push({type:'image',source:{type:'base64',media_type:imgFile.type,data:imgB64}});
+  content_msgs.push({type:'text',text:userText});
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:SYSTEM,messages:[{role:'user',content:content_msgs}]})
+    });
+    const data=await res.json();
+    const raw=data.content?.[0]?.text||'{}';
+    let parsed;
+    try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim())}catch{parsed=null}
+    thinking.style.display='none';
+    content.style.display='block';
+    renderResult(parsed,raw);
+  }catch(err){
+    thinking.style.display='none';
+    content.style.display='block';
+    document.getElementById('ai-text').innerHTML='<strong>Connection issue</strong> — please try again.';
+    document.getElementById('est-block').style.display='none';
+  }
+}
+
+function renderResult(p,raw){
+  const aiText=document.getElementById('ai-text');
+  const estBlock=document.getElementById('est-block');
+  const estFigure=document.getElementById('est-figure');
+  const estSub=document.getElementById('est-sub');
+  const estDetails=document.getElementById('est-details');
+  const specRow=document.getElementById('spec-row');
+  const actionsBlock=document.getElementById('actions-block');
+
+  if(!p){
+    aiText.textContent=raw;
+    estBlock.style.display='none';
+    setTimeout(()=>actionsBlock.classList.add('on'),400);
+    return;
+  }
+
+  aiText.innerHTML=`<strong></strong>${p.intro||''}<br/><br/>${p.closing||''}`;
+  aiText.querySelector('strong').textContent='';
+
+  estFigure.textContent=`${p.estimate_low||'—'} – ${p.estimate_high||'—'}`;
+  estSub.textContent=p.estimate_note||'';
+  estDetails.innerHTML=`
+    <div class="est-detail"><div class="est-detail-label">Time</div><div class="est-detail-val">${p.time_estimate||'—'}</div></div>
+    <div class="est-detail"><div class="est-detail-label">Rate</div><div class="est-detail-val">$200 / hr</div></div>
+    <div class="est-detail"><div class="est-detail-label">Deposit</div><div class="est-detail-val">$100</div></div>
+  `;
+
+  if(p.specialties&&p.specialties.length){
+    specRow.innerHTML=p.specialties.map(s=>`<span class="spec-chip">${s}</span>`).join('');
+  }
+
+  setTimeout(()=>estBlock.classList.add('on'),200);
+  setTimeout(()=>actionsBlock.classList.add('on'),500);
+}
+
+// ── BACK ──────────────────────────────────────────────
+function goHome(){
+  transitionTo(()=>{
+    document.getElementById('page-result').classList.remove('on');
+    document.getElementById('page-result').style.display='';
+    document.getElementById('page-home').style.display='';
+    // reset result state
+    document.getElementById('ai-thinking').style.display='flex';
+    document.getElementById('ai-content').style.display='none';
+    document.getElementById('est-block').classList.remove('on');
+    document.getElementById('actions-block').classList.remove('on');
+    document.getElementById('recap-img').classList.remove('on');
+    window.scrollTo({top:0,behavior:'instant'});
+  });
+}
+
+// ── BOOKING MODAL ─────────────────────────────────────
+function showContact(){document.getElementById('booking-modal').style.display='block';window.scrollTo({top:0})}
+function submitBooking(){
+  const n=document.getElementById('bk-name').value.trim();
+  const e=document.getElementById('bk-email').value.trim();
+  if(!n||!e){alert('Please enter your name and email.');return;}
+  document.getElementById('bk-form').style.display='none';
+  document.getElementById('bk-success').style.display='block';
+}
+</script>
+</body>
+</html>
